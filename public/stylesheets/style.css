@@ -1,0 +1,45 @@
+body {
+  padding: 0;
+  margin: 0;
+  font: 12pt "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: #ededed;
+}
+
+header {
+  margin: 0;
+  width: 100%;
+  background: #fefefe;
+  text-align: center;
+}
+
+#yt-url {
+  width: 60%;
+  max-width: 800px;
+  min-width: 100px;
+  padding: 8px;
+  border: 1px solid #bbbbbb;
+  margin: 15px;
+  font-size: 1.1em;
+  border-radius: 3px;
+}
+
+.main-card {
+  position: relative;
+  margin-top: 15px;
+  padding: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
+  max-width: 1000px;
+  background: #fefefe;
+  border: 1px solid #cccccc;
+}
+
+footer {
+  position: absolute;
+  bottom: 0.5em;
+  font-size: 0.9em;
+  color: #555555;
+  text-align: center;
+  width: 100%;
+}
