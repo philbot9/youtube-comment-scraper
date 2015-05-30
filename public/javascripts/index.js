@@ -34,9 +34,6 @@ function extractVideoID(url) {
 
 function fetchComments(videoID) {
   fetch();
-
-  console.log(videoID);
-
   function fetch(pageToken) {
     fetchCommentPage(videoID, pageToken, function(err, commentPage){
       if(err) alert('ERROR! ' + error);

@@ -2,10 +2,13 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    //link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/bootflat/css/bootstrap.min.css')
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
     script(src='javascripts/index.js')
   body
+    div(class="page-header")
+      h1 Example page header
     header 
       .yt-url-container
         input(type='text', name='yt-url', id='yt-url', placeholder='Youtube URL')
@@ -15,4 +18,4 @@ html
         #main-content
           block content
     footer
-      p Philip Klostermann © 2015
+      p © 2015 Philip Klostermann
