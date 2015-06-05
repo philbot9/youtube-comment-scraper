@@ -1,45 +1,106 @@
-body {
-  padding: 0;
-  margin: 0;
-  font: 12pt "Lucida Grande", Helvetica, Arial, sans-serif;
-  background: #ededed;
+html {
+  position: relative;
+  height: 100%;
 }
 
-header {
-  margin: 0;
+body {
+  background: #ededed;
+  height: 100%;
+  position: relative;
+}
+
+a {
+  color: #DA4453;
+  text-decoration: none;
+}
+  a:hover {
+    color: #ED5565;
+    text-decoration: underline;
+  }
+
+.scrape-options {
+  position: relative;
+  margin: 20px auto;
+  max-width: 800px;
+}
+
+.icheckbox_flat {
+  margin-right: 10px;
+}
+
+.navbar-default {
+  background: rgb(44, 62, 80);
+  padding: 25px;
+  border: 0;
+}
+
+.navbar-default .navbar-nav>li>a {
+  color: #EFEFEF;
+  font-size: 14pt;
+}
+  .navbar-default .navbar-nav>li>a:hover {
+    color: #DA4453;
+  }
+.navbar-default .navbar-toggle {
+  border-color: #DA4453;
+  background-color: #DA4453;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #ED5565;
+}
+  
+.site-logo {
+  position:relative;
+  top: 3px;
+  font-size: 36pt;
+  margin-right: 10px;
+}
+
+.site-title {
+  position: relative;
+  top: -3px;
+  font-weight: 600;
+  font-size: 18pt;
+  color: #EFEFEF;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+#ajax-container {
+  position: relative;
+  height: 100%; 
+  overflow: hidden;
+}
+
+.url-container {
   width: 100%;
-  background: #fefefe;
-  text-align: center;
+  min-width: 100px;
+  position: relative;
 }
 
 #yt-url {
-  width: 60%;
-  max-width: 800px;
-  min-width: 100px;
-  padding: 8px;
-  border: 1px solid #bbbbbb;
-  margin: 15px;
   font-size: 1.1em;
-  border-radius: 3px;
 }
 
-.main-card {
-  position: relative;
-  margin-top: 15px;
-  padding: 15px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 90%;
-  max-width: 1000px;
-  background: #fefefe;
-  box-shadow: 5px 5px 5px #cccccc;
-}
-
-footer {
-  position: absolute;
-  bottom: 0.5em;
-  font-size: 0.9em;
-  color: #555555;
-  text-align: center;
+.card {
+  position:relative;
   width: 100%;
+  padding: 20px 35px;
+  margin: 10px 0;
+  background: #fefefe;
+  box-shadow: 5px 5px 10px #dddddd;
 }
+
+
+.footer {
+  padding-top: 20px;
+  padding-bottom: 0;
+  background: none;
+}
+
+.text-center {
+  color: #aaaaaa;
+}
+

@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  .card
+    link(rel='stylesheet', href='/stylesheets/scrape.css')
+    script(type='text/javascript', src='/javascripts/scrape.js')
+    input(id='videoID' type='text' style='display: none;' value=videoID)
+    #scraping-container
+      h3 Scraping Comments
+      .progress.progress-striped.active
+        .progress-bar.progress-bar-danger(role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%")
+      
+      .well.well-details
+        ul.fa-ul(id="detail-list")
+        
+    #result-container
+      .tabbable.clearfix.result-panel
+        ul.nav.nav-tabs(id="result-tabs")
+          li.active
+            a(href="#json-tab", data-toggle="tab") JSON
+          li 
+            a(href="#csv-tab", data-toggle="tab") CSV
+          li.pull-right
+            a(href="#" id="save-dropdown" class="dropdown-toggle fa fa-download" data-toggle="dropdown" aria-controls="save-dropdown-contents" aria-expanded="false") &nbsp;Save 
+            ul.dropdown-menu(role="menu" aria-labelledby="save-dropdown" id="save-dropdown-contents")
+              li
+                a(href="#save-json" tabindex="-1" role="tab" id="save-json-tab" aria-controls="dropdown1") Save as JSON
+              li
+                a(href="#save-csv" tabindex="-1" role="tab" id="save-csv" aria-controls="dropdown2") Save as CSV         
+  
+        .tab-content(id="result-tabs-content")
+          .tab-pane.fade.active.in(id="json-tab")
+            textarea.result-text(id='json-result-text' wrap="off")
+          .tab-pane.fade(id="csv-tab")
+            textarea.result-text(id='csv-result-text' wrap="off")

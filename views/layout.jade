@@ -2,20 +2,43 @@ doctype html
 html
   head
     title= title
-    //link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='/bootflat/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/bootflat/css/site.min.css')
+    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
-    script(src='javascripts/index.js')
-  body
-    div(class="page-header")
-      h1 Example page header
-    header 
-      .yt-url-container
-        input(type='text', name='yt-url', id='yt-url', placeholder='Youtube URL')
-        input(type='button', value='Scrape', name='scrape-btn', id='scrape-btn')
-    .container
-      .main-card
-        #main-content
-          block content
-    footer
-      p © 2015 Philip Klostermann
+    script(src='/bootflat/js/site.min.js')
+    //script(src='/javascripts/ajaxLoading.js')
+    script(src='/javascripts/index.js')
+  body 
+    nav.navbar.navbar-default.navbar-static-top
+      .container
+        // Brand and toggle get grouped for better mobile display
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a(href='/')
+            i.fa.fa-comments-o.site-logo
+            span.site-title #{title}
+        // Collect the nav links, forms, and other content for toggling
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          ul.nav.navbar-nav.navbar-right          
+            li
+              a(href='/')
+                i.fa.fa-home
+            li
+              a(target="_blank" href='https://github.com/philbot9/youtube-comment-web')
+                i.fa.fa-github
+            li
+              a(target="_blank" href='http://philip.klostermann.ca/')
+                i.fa.fa-user
+        // /.navbar-collapse
+      // /.container-fluid
+
+
+       
+    .container(id='ajax-container')
+      block content
+           
