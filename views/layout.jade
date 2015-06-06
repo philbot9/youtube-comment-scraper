@@ -7,8 +7,7 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
     script(src='/bootflat/js/site.min.js')
-    //script(src='/javascripts/ajaxLoading.js')
-    script(src='/javascripts/index.js')
+    script(src='/javascripts/script.js')
   body 
     nav.navbar.navbar-default.navbar-static-top
       .container
@@ -21,7 +20,7 @@ html
             span.icon-bar
           a(href='/')
             i.fa.fa-comments-o.site-logo
-            span.site-title #{title}
+            span.site-title Youtube Comment Scraper
         // Collect the nav links, forms, and other content for toggling
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-right          
@@ -39,6 +38,6 @@ html
 
 
        
-    .container(id='ajax-container')
+    .container
       block content
            

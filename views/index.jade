@@ -1,48 +1,18 @@
 extends layout
 
 block content
+  //script(type='text/javascript', src='/javascripts/index.js')
   .card.yturl-card.col-md-1
-    form(name="scrape-form", id="scrape-form", action="#", method="post")
+    form(name="scrape-form", id="scrape-form", action="/scrape", method="post")
       .input-group.url-container.col-md-1
         input(type='text', name='yt-url', class='form-control search-query', id='yt-url', placeholder='Youtube URL')
         span.input-group-btn
           input(type='submit', value='Scrape', class='btn btn-danger', data-type='last', id='scrape-btn')
-      
-      .scrape-options
-        .row
-          .col-xs-6.col-md-4
-            label(class="checkbox")
-              input(type="checkbox" id="inlineCheckbox1" value="option1" checked)
-              |Comment ID
-          .col-xs-6.col-md-4
-            label(class="checkbox")
-              input(type="checkbox" id="inlineCheckbox2" value="option2" checked)
-              |Username
-          .col-xs-6.col-md-4
-            label(class="checkbox")
-              input(type="checkbox" id="inlineCheckbox3" value="option3" checked)
-              |Date
-          .col-xs-6.col-md-4
-            label(class="checkbox")
-              input(type="checkbox" id="inlineCheckbox1" value="option1" checked)
-              |Timestamp
-          .col-xs-6.col-md-4
-            label(class="checkbox")
-              input(type="checkbox" id="inlineCheckbox2" value="option2" checked)
-              |Comment Text
-          .col-xs-6.col-md-4
-            label(class="checkbox")
-              input(type="checkbox" id="inlineCheckbox3" value="option3" checked)
-              |Likes
-          .col-xs-6.col-md-4
-            label(class="checkbox")
-              input(type="checkbox" id="inlineCheckbox3" value="option3" checked)
-              |Replies
 
   
   .card.main-card.col-md-1
     #main-content
-      h3 Collect comments from Youtube
+      h4 Collect comments from Youtube
       p This app allows you to scrape all comments from a given YouTube video. The comments can be downloaded as one of the following:
       ul
         li CSV*

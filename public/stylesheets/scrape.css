@@ -2,18 +2,16 @@
   margin: 40px auto 25px auto;
 }
 
-.well-details {
-  position: relative;
-  margin: 20px auto;
-  width: 60%;
-  background: #FAFAFA;
-}
-
 #result-container {
-  display: none;
   margin: 20px 0;
 }
 
+.well {
+  position: relative;
+  margin: 20px auto;
+  max-width: 800px;
+  background: #F5F7F9;
+}
 
 .tab-content {
   padding: 0;

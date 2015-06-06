@@ -1,11 +1,15 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET scrape page. */
-router.get('/:videoID', function(req, res, next) {
+/* POST scrape page */
+router.post('/', function(req, res, next) {
+  if(!req.body.videoID) {
+    return res.render('error', {
+      'message': 'Invalid form received: Could not find a video ID.',
+    });
+  }
   res.render('scrape', { 
-    title: 'Youtube Comment Scraper',
-    videoID: req.params.videoID
+    videoID: req.body.videoID
   });
 });
 

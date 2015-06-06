@@ -4,16 +4,49 @@ block content
   .card
     link(rel='stylesheet', href='/stylesheets/scrape.css')
     script(type='text/javascript', src='/javascripts/scrape.js')
+    script(type='text/javascript', src='/javascripts/papaparse.min.js')
     input(id='videoID' type='text' style='display: none;' value=videoID)
     #scraping-container
       h3 Scraping Comments
       .progress.progress-striped.active
         .progress-bar.progress-bar-danger(role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%")
       
-      .well.well-details
+      .well
         ul.fa-ul(id="detail-list")
         
-    #result-container
+        
+    #result-container.hidden
+      .well
+        .row
+          .col-xs-6.col-md-4
+            label(class="checkbox")
+              input(type="checkbox" id="commentID" value="id" checked)
+              |Comment ID
+          .col-xs-6.col-md-4
+            label(class="checkbox")
+              input(type="checkbox" id="username" value="user" checked)
+              |Username
+          .col-xs-6.col-md-4
+            label(class="checkbox")
+              input(type="checkbox" id="date" value="date" checked)
+              |Date
+          .col-xs-6.col-md-4
+            label(class="checkbox")
+              input(type="checkbox" id="timestamp" value="timestamp" checked)
+              |Timestamp
+          .col-xs-6.col-md-4
+            label(class="checkbox")
+              input(type="checkbox" id="commentText" value="commentText" checked)
+              |Comment Text
+          .col-xs-6.col-md-4
+            label(class="checkbox")
+              input(type="checkbox" id="likes" value="likes" checked)
+              |Likes
+          .col-xs-6.col-md-4
+            label(class="checkbox")
+              input(type="checkbox" id="replies" value="replies" checked)
+              |Replies
+      
       .tabbable.clearfix.result-panel
         ul.nav.nav-tabs(id="result-tabs")
           li.active
@@ -21,7 +54,7 @@ block content
           li 
             a(href="#csv-tab", data-toggle="tab") CSV
           li.pull-right
-            a(href="#" id="save-dropdown" class="dropdown-toggle fa fa-download" data-toggle="dropdown" aria-controls="save-dropdown-contents" aria-expanded="false") &nbsp;Save 
+            a(href="#" id="save-dropdown" class="dropdown-toggle fa fa-download" data-toggle="dropdown" aria-controls="save-dropdown-contents" aria-expanded="false") &nbsp;Download 
             ul.dropdown-menu(role="menu" aria-labelledby="save-dropdown" id="save-dropdown-contents")
               li
                 a(href="#save-json" tabindex="-1" role="tab" id="save-json-tab" aria-controls="dropdown1") Save as JSON

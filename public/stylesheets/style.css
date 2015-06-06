@@ -1,11 +1,9 @@
 html {
   position: relative;
-  height: 100%;
 }
 
 body {
   background: #ededed;
-  height: 100%;
   position: relative;
 }
 
@@ -16,6 +14,14 @@ a {
   a:hover {
     color: #ED5565;
     text-decoration: underline;
+  }
+  a:visited {
+    color: #DA4453;
+    text-decoration: none;
+  }
+  a:active {
+    color: #DA4453;
+    text-decoration: none;
   }
 
 .scrape-options {
@@ -41,6 +47,7 @@ a {
   .navbar-default .navbar-nav>li>a:hover {
     color: #DA4453;
   }
+
 .navbar-default .navbar-toggle {
   border-color: #DA4453;
   background-color: #DA4453;
@@ -67,6 +74,12 @@ a {
   text-transform: uppercase;
   text-decoration: none;
 }
+  a > .site-title:hover {
+    text-decoration: none;
+  }
+  a > .site-title:visited {
+    text-decoration: none;
+  }
 
 #ajax-container {
   position: relative;

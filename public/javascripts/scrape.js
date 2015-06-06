@@ -1,18 +1,17 @@
-var API_URL = 'http://localhost:3000/api/';
+var API_URL = '/api';
 var totalCommentCount;
 var fetchedCount = 0;
 var commentPages = [];
 
-var li = '<li><i id="{{id}}" class="fa-li fa fa-circle-o-notch fa-spin"></i>{{text}}</li>';
-
 $(document).ready(function() {
   var videoID = $('#videoID').val();
   if(!videoID) return alert('No valid Video ID found.');
-  console.log(videoID);
   scrapeComments(videoID);
 });
 
+
 function addDetailItem(id, text) {
+  var li = '<li><i id="{{id}}" class="fa-li fa fa-circle-o-notch fa-spin"></i>{{text}}</li>';
   $(li.replace('{{text}}', text).replace('{{id}}', id))
     .hide().appendTo('#detail-list').show('slow');
 }
@@ -22,16 +21,11 @@ function setItemCompleted(id) {
 
 function scrapeComments(videoID) {
   addDetailItem('i-fetch-details', 'Fetching video details');
-  fetchComments(videoID);
-}
-
-function fetchComments(videoID) {
   fetch();
+  
   function fetch(pageToken) {
     fetchCommentPage(videoID, pageToken, function(err, commentPage) {
-      if(err) {
-        alert('Sorry, but we\'ve run into a problem. Please try again.', 'Error');
-      }
+      if(err) return;
       
       if(!totalCommentCount) {
         totalCommentCount = commentPage.videoCommentCount;
@@ -56,20 +50,6 @@ function fetchComments(videoID) {
         displayResults();
       }
     });
-  }
-}
-
-function updateProgressBar(percentage) {
-  percentage = percentage || Math.ceil((100 / totalCommentCount) * fetchedCount);
-  percentage = percentage <= 100 ? percentage : 100;
-  
-  if(percentage < 99) {
-    $('.progress-bar').attr('aria-valuenow', percentage).attr('style', 'width: ' + percentage + '%');
-    $('.progress-bar').text(fetchedCount + ' / ' + totalCommentCount);
-  } else {
-    $('.progress-bar').attr('aria-valuenow', 100).attr('style', 'width: 100%');
-    $('.progress-bar').text('Done!');
-    $('.progress').attr('class', 'progress');
   }
 }
 
@@ -99,20 +79,58 @@ function fetchCommentPage(videoID, pageToken, callback) {
   }
 }
 
+function updateProgressBar(percentage) {
+  percentage = percentage || Math.ceil((100 / totalCommentCount) * fetchedCount);
+  percentage = percentage <= 100 ? percentage : 100;
+  
+  if(percentage < 99) {
+    $('.progress-bar').attr('aria-valuenow', percentage).attr('style', 'width: ' + percentage + '%');
+    $('.progress-bar').text(fetchedCount + ' / ' + totalCommentCount);
+  } else {
+    $('.progress-bar').attr('aria-valuenow', 100).attr('style', 'width: 100%');
+    $('.progress-bar').text('Done!');
+    $('.progress').attr('class', 'progress');
+  }
+}
+
 function displayResults() {
-  $('#result-container').show(400);
-  $('#json-result-text').text(buildJSONResult());
+  $('#result-container').attr('class', '');
+  $('#result-container').show('slow');
+  
+  $('#result-container .well :checkbox').on('ifToggled', updateResults);
+  updateResults();
   
   setItemCompleted('i-process-results');
   addDetailItem('i-done', 'Done!');
   setItemCompleted('i-done');
 }
 
-function buildJSONResult() {
-  return JSON.stringify(buildResultArray(), null, 4);
+function getFieldOptions() {
+  return jQuery.makeArray($('#result-container .well input:checked')).map(function($elem) {
+    return $($elem).val();
+  });
 }
 
-function buildResultArray() {
+function updateResults() {
+  var fields = getFieldOptions();
+  $('#json-result-text').text(buildJSONResult(fields));
+  $('#csv-result-text').text(buildCSVResult(fields));
+}
+
+function buildJSONResult(fields) {
+  return JSON.stringify(buildResultArray(fields), null, 4);
+}
+
+function buildCSVResult(fields) {
+  var resultArray = buildResultArray(fields);
+  resultArray = flattenResultArray(resultArray);
+  console.log(JSON.stringify(resultArray));
+  return Papa.unparse(JSON.stringify(resultArray));
+}
+
+function buildResultArray(fields) {
+  if(!fields || !fields.length) return [];
+  
   return commentPages.reduce(function(comments, page) {
     if(comments.length) {
       //look for any overlap and remove
@@ -124,6 +142,61 @@ function buildResultArray() {
         }
       }
   	}
-    return comments.concat(page.comments);
+    
+    return comments.concat(page.comments.map(function(comment) {
+      var c = {};
+      fields.forEach(function(prop) {
+        if(prop === 'replies') c['hasReplies'] = comment['hasReplies'];
+        if(comment[prop]) c[prop] = comment[prop];
+      });
+      return c;
+    }));
   }, []);
+}
+
+function flattenResultArray(resultArray) {
+  var output = [];
+  var replies = [];
+  var props = findProps(resultArray);
+  
+  resultArray.forEach(function(elem) {
+    var obj = {};
+    props.forEach(function(prop) {
+      obj[prop] = '';
+    });
+  
+    Object.keys(elem).forEach(function(key) {
+      if(key === 'replies') {
+        
+      }
+      if(Array.isArray(elem[key])) {
+        elem[key].forEach(function(o) {
+          Object.keys(o).forEach(function(subKey) {
+            obj[key + '.' + subKey] = o[subKey];
+          });
+        });
+      } else {
+        obj[key] = elem[key];
+      }
+    });
+    output.push(obj);
+  });
+  
+  return output;
+  
+  function findProps(arr) {
+    var props = {};
+    arr.forEach(function(obj) {
+      Object.keys(obj).forEach(function(key) {
+        if(Array.isArray(obj[key])) {
+          findProps(obj[key]).forEach(function(subKey) {
+            props[key + '.' + subKey] = true;
+          });
+        } else {
+          props[key] = true;
+        }
+      });
+    });
+    return Object.keys(props);
+  }
 }
