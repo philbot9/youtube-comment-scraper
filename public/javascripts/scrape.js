@@ -1,4 +1,4 @@
-var API_URL = '/api';
+var API_URL = '/youtube-comments-api/';
 var totalCommentCount;
 var fetchedCount = 0;
 var commentPages = [];
@@ -34,7 +34,7 @@ function scrapeComments(videoID) {
       } 
 
       fetchedCount += commentPage.comments.reduce(function(total, comment) {
-        var replies = comment.hasReplies ? comment.replies.length : 0;
+        var replies = comment.replies ? comment.replies.length : 0;
         return total + 1 + replies; 
       }, 0);
 
@@ -42,12 +42,14 @@ function scrapeComments(videoID) {
       updateProgressBar();
       
       if(commentPage.nextPageToken) {
+        console.log("Fetching");
         fetch(commentPage.nextPageToken);
       } else {
+        console.log("Done!");
         setItemCompleted('i-scrape-comments');
         addDetailItem('i-process-results', 'Processing results');    
         updateProgressBar(100);
-        displayResults();
+        displayResults(videoID);
       }
     });
   }
@@ -93,7 +95,7 @@ function updateProgressBar(percentage) {
   }
 }
 
-function displayResults() {
+function displayResults(videoID) {
   $('#result-container').attr('class', '');
   $('#result-container').show('slow');
   
@@ -103,6 +105,27 @@ function displayResults() {
   setItemCompleted('i-process-results');
   addDetailItem('i-done', 'Done!');
   setItemCompleted('i-done');
+  
+  $('#save-json').click(function(e) {
+    download('comments-' + videoID + '.json', $('#json-result-text').val());
+  });
+  
+  $('#save-csv').click(function(e) {
+    download('comments-' + videoID + '.csv', $('#csv-result-text').val());  
+  });
+}
+
+function download(filename, text) {
+  var pom = document.createElement('a');
+  pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  pom.setAttribute('download', filename);
+
+  pom.style.display = 'none';
+  document.body.appendChild(pom);
+
+  pom.click();
+
+  document.body.removeChild(pom);
 }
 
 function getFieldOptions() {
@@ -112,9 +135,25 @@ function getFieldOptions() {
 }
 
 function updateResults() {
-  var fields = getFieldOptions();
-  $('#json-result-text').text(buildJSONResult(fields));
-  $('#csv-result-text').text(buildCSVResult(fields));
+  var timeoutID = setTimeout(function() {
+    console.log('Progress showing');  
+    $('.well-progress').fadeIn();
+    $('#options-row').css('opacity', '0.4');
+    $("#options-row *").attr("disabled", "disabled");
+  }, 100);
+  console.log('timeoutSet');
+  
+  setTimeout(function() {
+    var fields = getFieldOptions();
+    $('#json-result-text').text(buildJSONResult(fields));
+    $('#csv-result-text').text(buildCSVResult(fields));
+    
+    clearTimeout(timeoutID);
+    console.log('timeoutCleared');
+    $("#options-row *").removeAttr("disabled");
+    $('#options-row').css('opacity', '1');
+    $('.well-progress').fadeOut();  
+  }, 1);
 }
 
 function buildJSONResult(fields) {
@@ -124,7 +163,6 @@ function buildJSONResult(fields) {
 function buildCSVResult(fields) {
   var resultArray = buildResultArray(fields);
   resultArray = flattenResultArray(resultArray);
-  console.log(JSON.stringify(resultArray));
   return Papa.unparse(JSON.stringify(resultArray));
 }
 
@@ -133,7 +171,7 @@ function buildResultArray(fields) {
   
   return commentPages.reduce(function(comments, page) {
     if(comments.length) {
-      //look for any overlap and remove
+      //look for any overlap and remove it
       for(var i = 0; i < 20; i++) {
     		if(comments[comments.length - 1 - i].id === page.comments[0].id) {
     			page.comments.splice(0, 1);
@@ -146,8 +184,23 @@ function buildResultArray(fields) {
     return comments.concat(page.comments.map(function(comment) {
       var c = {};
       fields.forEach(function(prop) {
-        if(prop === 'replies') c['hasReplies'] = comment['hasReplies'];
-        if(comment[prop]) c[prop] = comment[prop];
+        if(prop === 'replies') {
+          c['hasReplies'] = comment['hasReplies'];
+          c['numberOfReplies'] = comment['numberOfReplies'] || 0;
+          
+          if(comment.replies) {
+            c.replies = [];
+            comment.replies.forEach(function(reply) {
+              var r = {};
+              fields.forEach(function(replyProp) {
+                r[replyProp] = reply[replyProp];
+              });
+              c.replies.push(r);
+            });
+          }
+        } else {
+          c[prop] = comment[prop] || '';
+        }
       });
       return c;
     }));
@@ -155,34 +208,38 @@ function buildResultArray(fields) {
 }
 
 function flattenResultArray(resultArray) {
-  var output = [];
-  var replies = [];
+  var result = [];
   var props = findProps(resultArray);
   
   resultArray.forEach(function(elem) {
-    var obj = {};
+    var comment = {};
     props.forEach(function(prop) {
-      obj[prop] = '';
+      comment[prop] = '';
     });
-  
+    
     Object.keys(elem).forEach(function(key) {
-      if(key === 'replies') {
-        
-      }
-      if(Array.isArray(elem[key])) {
-        elem[key].forEach(function(o) {
-          Object.keys(o).forEach(function(subKey) {
-            obj[key + '.' + subKey] = o[subKey];
-          });
-        });
-      } else {
-        obj[key] = elem[key];
+      if(key !== 'replies') {
+        comment[key] = elem[key];
       }
     });
-    output.push(obj);
+    result.push(comment);
+    
+    if(elem.replies) {
+      elem.replies.forEach(function(replyElem) {
+        var reply = {};
+        props.forEach(function(prop) {
+          reply[prop] = '';
+        });
+        
+        Object.keys(replyElem).forEach(function(key) {
+          reply['replies.' + key] = replyElem[key];
+        });
+        result.push(reply);
+      });      
+    } 
   });
   
-  return output;
+  return result;
   
   function findProps(arr) {
     var props = {};

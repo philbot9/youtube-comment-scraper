@@ -6,6 +6,7 @@ block content
     script(type='text/javascript', src='/javascripts/scrape.js')
     script(type='text/javascript', src='/javascripts/papaparse.min.js')
     input(id='videoID' type='text' style='display: none;' value=videoID)
+    
     #scraping-container
       h3 Scraping Comments
       .progress.progress-striped.active
@@ -14,10 +15,13 @@ block content
       .well
         ul.fa-ul(id="detail-list")
         
-        
+    
     #result-container.hidden
       .well
-        .row
+        .well.well-progress
+          i.fa.fa-circle-o-notch.fa-spin  
+        h4 Options
+        #options-row.row
           .col-xs-6.col-md-4
             label(class="checkbox")
               input(type="checkbox" id="commentID" value="id" checked)
@@ -57,9 +61,9 @@ block content
             a(href="#" id="save-dropdown" class="dropdown-toggle fa fa-download" data-toggle="dropdown" aria-controls="save-dropdown-contents" aria-expanded="false") &nbsp;Download 
             ul.dropdown-menu(role="menu" aria-labelledby="save-dropdown" id="save-dropdown-contents")
               li
-                a(href="#save-json" tabindex="-1" role="tab" id="save-json-tab" aria-controls="dropdown1") Save as JSON
+                a(href="#" tabindex="-1" role="tab" id="save-json" aria-controls="dropdown1") Save as JSON
               li
-                a(href="#save-csv" tabindex="-1" role="tab" id="save-csv" aria-controls="dropdown2") Save as CSV         
+                a(href="#" tabindex="-1" role="tab" id="save-csv" aria-controls="dropdown2") Save as CSV         
   
         .tab-content(id="result-tabs-content")
           .tab-pane.fade.active.in(id="json-tab")

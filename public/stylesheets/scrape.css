@@ -4,13 +4,30 @@
 
 #result-container {
   margin: 20px 0;
+  z-index: 1;
 }
 
 .well {
   position: relative;
   margin: 20px auto;
+  padding: 10px;
   max-width: 800px;
   background: #F5F7F9;
+}
+
+.well-progress {
+  display: none;
+  width: 10%;
+  position: absolute;
+  left: 45%;
+  top: 20%;
+  z-index: 999;
+  font-size: 26pt;
+  background: #666666;
+  color: #FFFFFF;
+  opacity: 0.6;
+  text-align: center;
+  display: inline-block;
 }
 
 .tab-content {
