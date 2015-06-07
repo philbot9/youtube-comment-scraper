@@ -12,7 +12,11 @@
   margin: 20px auto;
   padding: 10px;
   max-width: 800px;
-  background: #F5F7F9;
+  background: #fcfcfc;
+}
+
+.icheckbox_flat {
+  margin: 5px;
 }
 
 .well-progress {
@@ -41,6 +45,6 @@
   min-height: 500px;  
   margin: 0;
   border: 0px;
-  background: #F5F7F9;
+  background: #fcfcfc;
   padding: 8px;
 }

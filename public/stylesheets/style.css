@@ -3,35 +3,8 @@ html {
 }
 
 body {
-  background: #ededed;
+  background: #F1F1F1;
   position: relative;
-}
-
-a {
-  color: #DA4453;
-  text-decoration: none;
-}
-  a:hover {
-    color: #ED5565;
-    text-decoration: underline;
-  }
-  a:visited {
-    color: #DA4453;
-    text-decoration: none;
-  }
-  a:active {
-    color: #DA4453;
-    text-decoration: none;
-  }
-
-.scrape-options {
-  position: relative;
-  margin: 20px auto;
-  max-width: 800px;
-}
-
-.icheckbox_flat {
-  margin-right: 10px;
 }
 
 .navbar-default {
@@ -41,52 +14,49 @@ a {
 }
 
 .navbar-default .navbar-nav>li>a {
-  color: #EFEFEF;
+  color: #FFFFFF;
   font-size: 14pt;
 }
   .navbar-default .navbar-nav>li>a:hover {
-    color: #DA4453;
+    color: #4FC1E9;
   }
 
+
 .navbar-default .navbar-toggle {
-  border-color: #DA4453;
-  background-color: #DA4453;
+  border-color: #3BAFDA;
+  background-color: #3BAFDA;
 }
 
 .navbar-default .navbar-toggle .icon-bar {
-  background-color: #ED5565;
+  background-color: #4FC1E9;
 }
   
 .site-logo {
-  position:relative;
-  top: 3px;
-  font-size: 36pt;
+  position:absolute;
+  top: -10px;
+  font-size: 85pt;
+  opacity: 0.15;
   margin-right: 10px;
+  color: #4FC1E9;
 }
+  .site-logo:hover {
+    opacity: 0.5;
+  }
 
 .site-title {
   position: relative;
-  top: -3px;
+  top: 12px;
   font-weight: 600;
   font-size: 18pt;
-  color: #EFEFEF;
+  color: #FFFFFF;
   letter-spacing: 1px;
   text-transform: uppercase;
   text-decoration: none;
 }
-  a > .site-title:hover {
-    text-decoration: none;
+  .site-title:hover {
+    color: #4FC1E9;
   }
-  a > .site-title:visited {
-    text-decoration: none;
-  }
-
-#ajax-container {
-  position: relative;
-  height: 100%; 
-  overflow: hidden;
-}
-
+  
 .url-container {
   width: 100%;
   min-width: 100px;
@@ -94,7 +64,7 @@ a {
 }
 
 #yt-url {
-  font-size: 1.1em;
+  font-size: 1.2em;
 }
 
 .card {
@@ -102,10 +72,9 @@ a {
   width: 100%;
   padding: 20px 35px;
   margin: 10px 0;
-  background: #fefefe;
+  background: #ffffff;
   box-shadow: 5px 5px 10px #dddddd;
 }
-
 
 .footer {
   padding-top: 20px;

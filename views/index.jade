@@ -1,13 +1,12 @@
 extends layout
 
 block content
-  //script(type='text/javascript', src='/javascripts/index.js')
   .card.yturl-card.col-md-1
-    form(name="scrape-form", id="scrape-form", action="/scrape", method="post")
+    form#scrape-form(name='scrape-form', action='/scrape', method='post')
       .input-group.url-container.col-md-1
-        input(type='text', name='yt-url', class='form-control search-query', id='yt-url', placeholder='Youtube URL')
+        input#yt-url.form-control.search-query(type='text', name='yt-url', placeholder='Youtube URL')
         span.input-group-btn
-          input(type='submit', value='Scrape', class='btn btn-danger', data-type='last', id='scrape-btn')
+          input#scrape-btn.btn.btn-danger(type='submit', value='Scrape', data-type='last')
 
   
   .card.main-card.col-md-1
