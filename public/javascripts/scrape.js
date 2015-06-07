@@ -1,4 +1,4 @@
-var API_URL = '/youtube-comments-api/';
+var API_URL = '/api/';
 var totalCommentCount;
 var fetchedCount = 0;
 var commentPages = [];
@@ -42,10 +42,8 @@ function scrapeComments(videoID) {
       updateProgressBar();
       
       if(commentPage.nextPageToken) {
-        console.log("Fetching");
         fetch(commentPage.nextPageToken);
       } else {
-        console.log("Done!");
         setItemCompleted('i-scrape-comments');
         addDetailItem('i-process-results', 'Processing results');    
         updateProgressBar(100);
@@ -64,7 +62,7 @@ function fetchCommentPage(videoID, pageToken, callback) {
   }
 
   $.ajax({
-    type: "POST",
+    type: 'POST',
     accepts: 'json',
     url: API_URL,
     data: data,
@@ -95,53 +93,37 @@ function updateProgressBar(percentage) {
   }
 }
 
+
 function displayResults(videoID) {
   $('#result-container').attr('class', '');
   $('#result-container').show('slow');
   
-  $('#result-container .well :checkbox').on('ifToggled', updateResults);
-  updateResults();
-  
-  setItemCompleted('i-process-results');
-  addDetailItem('i-done', 'Done!');
-  setItemCompleted('i-done');
+  updateResults(function() {
+    setItemCompleted('i-process-results');
+    addDetailItem('i-done', 'Done!');
+    setItemCompleted('i-done');  
+  });
   
   $('#save-json').click(function(e) {
-    download('comments-' + videoID + '.json', $('#json-result-text').val());
+    download($('#json-result-text').val(), 'comments-' + videoID + '.json', 'text/plain');
   });
   
   $('#save-csv').click(function(e) {
-    download('comments-' + videoID + '.csv', $('#csv-result-text').val());  
+    download($('#csv-result-text').val(), 'comments-' + videoID + '.csv', 'text/plain');  
+  });
+  
+  $('#result-container .well :checkbox').on('ifToggled', function(){  
+    return updateResults();
   });
 }
 
-function download(filename, text) {
-  var pom = document.createElement('a');
-  pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-  pom.setAttribute('download', filename);
-
-  pom.style.display = 'none';
-  document.body.appendChild(pom);
-
-  pom.click();
-
-  document.body.removeChild(pom);
-}
-
-function getFieldOptions() {
-  return jQuery.makeArray($('#result-container .well input:checked')).map(function($elem) {
-    return $($elem).val();
-  });
-}
-
-function updateResults() {
-  var timeoutID = setTimeout(function() {
-    console.log('Progress showing');  
+function updateResults(callback) {
+  var timeoutID = setTimeout(function() {  
     $('.well-progress').fadeIn();
     $('#options-row').css('opacity', '0.4');
-    $("#options-row *").attr("disabled", "disabled");
+    $('#options-row *').attr('disabled', 'disabled');
+    $('textarea').css('visibility', 'hidden');
   }, 100);
-  console.log('timeoutSet');
   
   setTimeout(function() {
     var fields = getFieldOptions();
@@ -149,11 +131,19 @@ function updateResults() {
     $('#csv-result-text').text(buildCSVResult(fields));
     
     clearTimeout(timeoutID);
-    console.log('timeoutCleared');
-    $("#options-row *").removeAttr("disabled");
+    $('#options-row *').removeAttr('disabled');
     $('#options-row').css('opacity', '1');
-    $('.well-progress').fadeOut();  
-  }, 1);
+    $('textarea').css('visibility', 'visible');
+    $('.well-progress').fadeOut();
+    
+    callback();      
+  }, 0);
+}
+
+function getFieldOptions() {
+  return jQuery.makeArray($('#result-container .well input:checked')).map(function($elem) {
+    return $($elem).val();
+  });
 }
 
 function buildJSONResult(fields) {

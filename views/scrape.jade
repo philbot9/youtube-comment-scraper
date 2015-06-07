@@ -4,7 +4,8 @@ block content
   .card
     link(rel='stylesheet', href='/stylesheets/scrape.css')
     script(type='text/javascript', src='/javascripts/scrape.js')
-    script(type='text/javascript', src='/javascripts/papaparse.min.js')
+    script(type='text/javascript', src='/libs/papaparse.min.js')
+    script(type='text/javascript', src="/libs/download.js")
     input(id='videoID' type='text' style='display: none;' value=videoID)
     
     #scraping-container
@@ -67,6 +68,6 @@ block content
   
         .tab-content(id="result-tabs-content")
           .tab-pane.fade.active.in(id="json-tab")
-            textarea.result-text(id='json-result-text' wrap="off")
+            textarea.result-text(id='json-result-text' wrap="off" readonly)
           .tab-pane.fade(id="csv-tab")
-            textarea.result-text(id='csv-result-text' wrap="off")
+            textarea.result-text(id='csv-result-text' wrap="off" readonly)
