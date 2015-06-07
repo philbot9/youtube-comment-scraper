@@ -53,6 +53,8 @@ function scrapeComments(videoID) {
   }
 }
 
+// TODO: Give feedback if something fails!
+
 function fetchCommentPage(videoID, pageToken, callback) {
   var data = {
     'videoID': videoID

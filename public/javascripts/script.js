@@ -20,7 +20,7 @@ function extractVideoID(url) {
   if(!url || !url.length || typeof url != 'string')
     return false;
   
-  var m = /(?:http[s]?:\/\/)?(?:www\.)?youtube\.\w{2,3}\/watch\?v=(.+)/i.exec(url);
+  var m = /(?:http[s]?:\/\/)?(?:www\.)?youtube\.\w{2,3}\/watch\?v=([^&]+)\&?/i.exec(url);
   if(!m || m.length < 1)
     return false;
   
