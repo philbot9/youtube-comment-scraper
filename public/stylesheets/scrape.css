@@ -76,6 +76,11 @@ a#save-dropdown {
   background: #F5F5F5; 
 }
 
+.csv-table .date-cell, .csv-table .replies\.date-cell {
+  max-width:100%;
+  white-space: nowrap;
+}
+
 .csv-table .commentText-cell, .csv-table .replies\.commentText-cell {
   min-width: 50em;
 }

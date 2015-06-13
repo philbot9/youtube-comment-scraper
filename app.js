@@ -8,9 +8,12 @@ var bodyParser = require('body-parser');
 var indexRoute = require('./routes/index');
 var scrapeRoute = require('./routes/scrape');
 
-var proxy = require('express-http-proxy');
 var app = express();
-app.use('/api', proxy('http://localhost:49160/'));
+
+if(app.get('env') === 'development') {
+  var proxy = require('express-http-proxy');
+  app.use('/api', proxy('http://localhost:49160/'));
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -54,7 +57,7 @@ if (app.get('env') === 'development') {
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
-    message: err.message,
+    message: err.status + ' - ' + err.message,
     error: {}
   });
 });
