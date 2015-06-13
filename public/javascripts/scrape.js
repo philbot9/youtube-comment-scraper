@@ -3,21 +3,42 @@ var totalCommentCount;
 var fetchedCount = 0;
 var commentPages = [];
 
+/*************************************
+ ** UI functions
+ ************************************/
 $(document).ready(function() {
   var videoID = $('#videoID').val();
   if(!videoID) return alert('No valid Video ID found.');
   scrapeComments(videoID);
 });
 
-
 function addDetailItem(id, text) {
   var li = '<li><i id="{{id}}" class="fa-li fa fa-circle-o-notch fa-spin"></i>{{text}}</li>';
   $(li.replace('{{text}}', text).replace('{{id}}', id))
     .hide().appendTo('#detail-list').show('slow');
 }
+
 function setItemCompleted(id) {
   $('#' + id).attr('class', 'fa-li fa fa-check-circle-o');
 }
+
+function updateProgressBar(percentage) {
+  percentage = percentage || Math.ceil((100 / totalCommentCount) * fetchedCount);
+  percentage = percentage <= 100 ? percentage : 100;
+  
+  if(percentage < 99) {
+    $('.progress-bar').attr('aria-valuenow', percentage).attr('style', 'width: ' + percentage + '%');
+    $('.progress-bar').text(fetchedCount + ' / ' + totalCommentCount);
+  } else {
+    $('.progress-bar').attr('aria-valuenow', 100).attr('style', 'width: 100%');
+    $('.progress-bar').text('Done!');
+    $('.progress').attr('class', 'progress');
+  }
+}
+
+/*************************************
+ ** Scraping functions
+ ************************************/
 
 function scrapeComments(videoID) {
   addDetailItem('i-fetch-details', 'Fetching video details');
@@ -81,20 +102,10 @@ function fetchCommentPage(videoID, pageToken, callback) {
   }
 }
 
-function updateProgressBar(percentage) {
-  percentage = percentage || Math.ceil((100 / totalCommentCount) * fetchedCount);
-  percentage = percentage <= 100 ? percentage : 100;
-  
-  if(percentage < 99) {
-    $('.progress-bar').attr('aria-valuenow', percentage).attr('style', 'width: ' + percentage + '%');
-    $('.progress-bar').text(fetchedCount + ' / ' + totalCommentCount);
-  } else {
-    $('.progress-bar').attr('aria-valuenow', 100).attr('style', 'width: 100%');
-    $('.progress-bar').text('Done!');
-    $('.progress').attr('class', 'progress');
-  }
-}
 
+/*************************************
+ ** Result Processing functions
+ ************************************/
 
 function displayResults(videoID) {
   $('#result-container').attr('class', '');
@@ -107,11 +118,11 @@ function displayResults(videoID) {
   });
   
   $('#save-json').click(function(e) {
-    download($('#json-result-text').val(), 'comments-' + videoID + '.json', 'text/plain');
+    download(buildJsonResult(), 'comments-' + videoID + '.json', 'text/plain');
   });
   
   $('#save-csv').click(function(e) {
-    download($('#csv-result-text').val(), 'comments-' + videoID + '.csv', 'text/plain');  
+    download(buildCsvResult(), 'comments-' + videoID + '.csv', 'text/plain');  
   });
   
   $('#result-container .well :checkbox').on('ifToggled', function(){  
@@ -124,13 +135,12 @@ function updateResults(callback) {
     $('.well-progress').fadeIn();
     $('#options-row').css('opacity', '0.4');
     $('#options-row *').attr('disabled', 'disabled');
-    $('textarea').css('visibility', 'hidden');
+    $('.result-div').css('visibility', 'hidden');
   }, 100);
   
   setTimeout(function() {
-    var fields = getFieldOptions();
-    $('#json-result-text').text(buildJSONResult(fields));
-    $('#csv-result-text').text(buildCSVResult(fields));
+    $('#json-result').html(generateJsonOutput());
+    $('#csv-result-text').text(generateCsvOutput());
     
     clearTimeout(timeoutID);
     $('#options-row *').removeAttr('disabled');
@@ -138,24 +148,34 @@ function updateResults(callback) {
     $('textarea').css('visibility', 'visible');
     $('.well-progress').fadeOut();
     
-    callback();      
-  }, 0);
+    if(callback) {
+      callback();
+    }     
+  }, 1);
 }
 
 function getFieldOptions() {
-  return jQuery.makeArray($('#result-container .well input:checked')).map(function($elem) {
-    return $($elem).val();
+  return jQuery.makeArray($('#result-container .well input:checked')).map(function(elem) {
+    return $(elem).val();
   });
 }
 
-function buildJSONResult(fields) {
-  return JSON.stringify(buildResultArray(fields), null, 4);
+function buildJsonResult() {
+  return JSON.stringify(buildResultArray(getFieldOptions()), null, 2);
 }
 
-function buildCSVResult(fields) {
-  var resultArray = buildResultArray(fields);
+function generateJsonOutput() {
+  return JsonHuman.format(JSON.parse(buildJsonResult()));
+}
+
+function buildCsvResult() {
+  var resultArray = buildResultArray(getFieldOptions());
   resultArray = flattenResultArray(resultArray);
   return Papa.unparse(JSON.stringify(resultArray));
+}
+
+function generateCsvOutput() {
+  return buildCsvResult();
 }
 
 function buildResultArray(fields) {
@@ -174,29 +194,34 @@ function buildResultArray(fields) {
   	}
     
     return comments.concat(page.comments.map(function(comment) {
-      var c = {};
-      fields.forEach(function(prop) {
-        if(prop === 'replies') {
-          c['hasReplies'] = comment['hasReplies'];
-          c['numberOfReplies'] = comment['numberOfReplies'] || 0;
-          
-          if(comment.replies) {
-            c.replies = [];
-            comment.replies.forEach(function(reply) {
-              var r = {};
-              fields.forEach(function(replyProp) {
-                r[replyProp] = reply[replyProp];
-              });
-              c.replies.push(r);
-            });
-          }
-        } else {
-          c[prop] = comment[prop] || '';
-        }
-      });
-      return c;
+      return filterCommentProperties(comment, fields);
     }));
   }, []);
+}
+
+function filterCommentProperties(comment, properties) {
+  var c = {};
+  properties.forEach(function(prop) {
+    if(prop === 'replies') {
+      c['hasReplies'] = comment['hasReplies'];
+      c['numberOfReplies'] = comment['numberOfReplies'] || 0;
+      if(comment.replies) {
+        c.replies = [];
+        comment.replies.forEach(function(reply) {
+          var r = {};
+          properties.forEach(function(replyProp) {
+            if(replyProp !== 'replies') {
+              r[replyProp] = reply[replyProp];
+            }
+          });
+          c.replies.push(r);
+        });
+      }
+    } else if(typeof comment[prop] !== 'undefined' && comment[prop] !== null) {
+      c[prop] = comment[prop] || '';
+    }
+  });
+  return c;
 }
 
 function flattenResultArray(resultArray) {

@@ -3,9 +3,11 @@ extends layout
 block content
   .card
     link(rel='stylesheet', href='/stylesheets/scrape.css')
-    script(type='text/javascript', src='/javascripts/scrape.js')
+    link(rel='stylesheet', href='/stylesheets/json.human.css')
+    script(type='text/javascript', src="/libs/json.human.js")
     script(type='text/javascript', src='/libs/papaparse.min.js')
-    script(type='text/javascript', src="/libs/download.js")
+    script(type='text/javascript', src='/libs/download.js')
+    script(type='text/javascript', src='/javascripts/scrape.js')
     input#videoID(type='text', style='display: none;', value=videoID)
     
     #scraping-container
@@ -68,6 +70,6 @@ block content
   
         #result-tabs-content.tab-content
           #json-tab.tab-pane.fade.active.in
-            textarea#json-result-text.result-text(wrap='off', readonly)
+            #json-result.result-div
           #csv-tab.tab-pane.fade
             textarea#csv-result-text.result-text(wrap='off', readonly)
