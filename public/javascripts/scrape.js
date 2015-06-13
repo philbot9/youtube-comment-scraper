@@ -135,12 +135,10 @@ function displayResults(videoID) {
 }
 
 function updateResults(callback) {
-  var timeoutID = setTimeout(function() {  
-    $('.well-progress').fadeIn();
-    $('#options-row').css('opacity', '0.4');
-    $('#options-row *').attr('disabled', 'disabled');
-    $('.result-div').css('visibility', 'hidden');
-  }, 100);
+  $('.well-progress').show();
+  $('#options-row').css('opacity', '0.4');
+  $('#options-row *').attr('disabled', 'disabled');
+  $('.result-div').css('visibility', 'hidden');
   
   setTimeout(function() {
     var requiredFields = getFieldOptions();
@@ -149,16 +147,16 @@ function updateResults(callback) {
     $('#json-result').html(generateJsonOutput(resultArray));
     $('#csv-result').html(generateCsvOutput(resultArray));
     
-    clearTimeout(timeoutID);
     $('#options-row *').removeAttr('disabled');
     $('#options-row').css('opacity', '1');
-    $('textarea').css('visibility', 'visible');
+    $('.result-div').css('visibility', 'visible');
     $('.well-progress').fadeOut();
     
     if(callback) {
       callback();
     }
   }, 1);
+  return;
 }
 
 function getFieldOptions() {
