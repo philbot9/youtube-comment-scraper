@@ -118,11 +118,15 @@ function displayResults(videoID) {
   });
   
   $('#save-json').click(function(e) {
-    download(buildJsonResult(), 'comments-' + videoID + '.json', 'text/plain');
+    var requiredFields = getFieldOptions();
+    var resultArray = buildResultArray(requiredFields);
+    download(generateJsonFile(resultArray), 'comments-' + videoID + '.json', 'text/plain');
   });
   
   $('#save-csv').click(function(e) {
-    download(buildCsvResult(), 'comments-' + videoID + '.csv', 'text/plain');  
+    var requiredFields = getFieldOptions();
+    var resultArray = buildResultArray(requiredFields);
+    download(generateCsvFile(resultArray), 'comments-' + videoID + '.csv', 'text/plain');  
   });
   
   $('#result-container .well :checkbox').on('ifToggled', function(){  
@@ -139,8 +143,11 @@ function updateResults(callback) {
   }, 100);
   
   setTimeout(function() {
-    $('#json-result').html(generateJsonOutput());
-    $('#csv-result-text').text(generateCsvOutput());
+    var requiredFields = getFieldOptions();
+    var resultArray = buildResultArray(requiredFields);
+
+    $('#json-result').html(generateJsonOutput(resultArray));
+    $('#csv-result').html(generateCsvOutput(resultArray));
     
     clearTimeout(timeoutID);
     $('#options-row *').removeAttr('disabled');
@@ -150,7 +157,7 @@ function updateResults(callback) {
     
     if(callback) {
       callback();
-    }     
+    }
   }, 1);
 }
 
@@ -160,22 +167,46 @@ function getFieldOptions() {
   });
 }
 
-function buildJsonResult() {
-  return JSON.stringify(buildResultArray(getFieldOptions()), null, 2);
+function generateJsonFile(resultArray) {
+  return JSON.stringify(resultArray, null, 2);
 }
 
-function generateJsonOutput() {
-  return JsonHuman.format(JSON.parse(buildJsonResult()));
+function generateCsvFile(resultArray) {
+  var flattened = flattenResultArray(resultArray);
+  return Papa.unparse(JSON.stringify(flattened));
 }
 
-function buildCsvResult() {
-  var resultArray = buildResultArray(getFieldOptions());
-  resultArray = flattenResultArray(resultArray);
-  return Papa.unparse(JSON.stringify(resultArray));
+function generateJsonOutput(resultArray) {
+  return JsonHuman.format(resultArray);
 }
 
-function generateCsvOutput() {
-  return buildCsvResult();
+function generateCsvOutput(resultArray) {
+  var flattened = flattenResultArray(resultArray);
+  return generateHtmlTable(flattened);
+}
+
+function generateHtmlTable(flattenedResultArray) {
+  if(!flattenedResultArray || !flattenedResultArray.length) return '';
+  var props = Object.keys(flattenedResultArray[0]);
+  
+  return [
+    '<table class="csv-table">',
+    ' <thead>',
+    '   <tr>',
+    props.reduce(function(str, prop){
+      return str += '<th>' + prop + '</th>';
+    }, ''),
+    '   </tr>',
+    ' </thead>',
+    ' <tbody>',
+    flattenedResultArray.reduce(function(str, row) {
+      return str += '   <tr>' + Object.keys(row).reduce(function(rowStr, key) {
+        return rowStr += '<td class="' + key + '-cell">' + row[key] + '</td>';
+      }, '') + '</tr>\n';
+    }, ''),
+    ' </tbody>',
+    '</table>'
+  ].join('\n');
 }
 
 function buildResultArray(fields) {
@@ -192,16 +223,15 @@ function buildResultArray(fields) {
         }
       }
   	}
-    
     return comments.concat(page.comments.map(function(comment) {
-      return filterCommentProperties(comment, fields);
+      return filterCommentFields(comment, fields);
     }));
   }, []);
 }
 
-function filterCommentProperties(comment, properties) {
+function filterCommentFields(comment, fields) {
   var c = {};
-  properties.forEach(function(prop) {
+  fields.forEach(function(prop) {
     if(prop === 'replies') {
       c['hasReplies'] = comment['hasReplies'];
       c['numberOfReplies'] = comment['numberOfReplies'] || 0;
@@ -209,7 +239,7 @@ function filterCommentProperties(comment, properties) {
         c.replies = [];
         comment.replies.forEach(function(reply) {
           var r = {};
-          properties.forEach(function(replyProp) {
+          fields.forEach(function(replyProp) {
             if(replyProp !== 'replies') {
               r[replyProp] = reply[replyProp];
             }
