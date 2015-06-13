@@ -1,14 +1,14 @@
 #!/bin/bash
 
-printf "### Removing previous image (if any)\n"
-docker kill youtube-comment-web 2> /dev/null > /dev/null
-docker rm youtube-comment-web 2> /dev/null > /dev/null
+printf "### Removing old container\n"
+docker kill youtube-comment-web
+docker rm youtube-comment-web
 
-printf "\n### Building Container..."
+printf "\n### Building Container...\n"
 docker build -t youtube-comment-web .
 
-printf "\n### Starting Container..."
-containerId=`docker run -d -p 49161:3000 --name youtube-comment-web youtube-comment-web`
+printf "\n### Starting Container...\n"
+docker run -d -p 49161:3000 -e "NODE_ENV=production" --restart=always --name youtube-comment-web youtube-comment-web
 
 printf "\n\n### Result:\n"
 docker ps --filter=[name=youtube-comment-web]
