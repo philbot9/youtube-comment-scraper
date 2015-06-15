@@ -22,14 +22,16 @@ The project includes a Dockerfile and deploy script. Running `./deploy` will cre
 
 
 ## Licensing and Attributions
-**youtube-comment-web** is licensed under ISC. See the included LICENSE file for details. **This project is in no way affiliated with YouTube.**
+**youtube-comment-web** is licensed under ISC. See the included LICENSE file for details. 
+**This project is in no way affiliated with YouTube.**
 
 A number of third party resources and libraries are also included. Each one is under the copyright of their respective creators and subject to their individual licenses. Third party resources and libraries:
+
 | Name | License | Copyright |
-|---|---|---|
-| [jQuery](https://jquery.com/) | | jQuery Foundation |
-| [Font Awesome](http://fontawesome.io/) | [Various](http://fontawesome.io/license/) | Dave Gandy
-| [Bootflat](http://bootflat.github.io/) | MIT | bootflat
+|------|---------|-----------|
+| [jQuery](https://jquery.com/) |  | jQuery Foundation |
+| [Font Awesome](http://fontawesome.io/) | [Various](http://fontawesome.io/license/) | Dave Gandy |
+| [Bootflat](http://bootflat.github.io/) | MIT | bootflat |
 | [Papa Parse](http://papaparse.com/) | MIT | Matthew Holt | 
 | [json.human.js](https://github.com/marianoguerra/json.human.js) | MIT | Mariano Guerra |
-| [download.js](http://danml.com/#/download.html) | | Dan Davis |
+| [download.js](http://danml.com/#/download.html) |  | Dan Davis |
