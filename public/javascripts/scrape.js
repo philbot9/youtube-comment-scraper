@@ -1,6 +1,4 @@
 var API_URL = '/api/';
-var totalCommentCount;
-var fetchedCount = 0;
 var commentPages = [];
 
 /*************************************
@@ -22,13 +20,13 @@ function setItemCompleted(id) {
   $('#' + id).attr('class', 'fa-li fa fa-check-circle-o');
 }
 
-function updateProgressBar(percentage) {
-  percentage = percentage || Math.ceil((100 / totalCommentCount) * fetchedCount);
+function updateProgressBar(progress, total, percentage) {
+  percentage = percentage || Math.ceil((100 / total) * progress);
   percentage = percentage <= 100 ? percentage : 100;
   
   if(percentage < 99) {
     $('.progress-bar').attr('aria-valuenow', percentage).attr('style', 'width: ' + percentage + '%');
-    $('.progress-bar').text(fetchedCount + ' / ' + totalCommentCount);
+    $('.progress-bar').text(progress + ' / ' + total);
   } else {
     $('.progress-bar').attr('aria-valuenow', 100).attr('style', 'width: 100%');
     $('.progress-bar').text('Done!');
@@ -42,39 +40,38 @@ function updateProgressBar(percentage) {
 
 function scrapeComments(videoID) {
   addDetailItem('i-fetch-details', 'Fetching video details');
+  var fetchCount = 0;
   fetch();
   
   function fetch(pageToken) {
+    
     fetchCommentPage(videoID, pageToken, function(err, commentPage) {
       if(err) return;
       
-      if(!totalCommentCount) {
-        totalCommentCount = commentPage.videoCommentCount;
+      if(!fetchCount) {
         setItemCompleted('i-fetch-details');
-        addDetailItem('i-scrape-comments', 'Scraping ' + totalCommentCount + ' comments');
-      } 
+        addDetailItem('i-scrape-comments', 'Scraping ' + commentPage.videoCommentCount + ' comments');
+      }
 
-      fetchedCount += commentPage.comments.reduce(function(total, comment) {
+      fetchCount += commentPage.comments.reduce(function(total, comment) {
         var replies = comment.replies ? comment.replies.length : 0;
         return total + 1 + replies; 
       }, 0);
 
       commentPages.push(commentPage);
-      updateProgressBar();
+      updateProgressBar(fetchCount, commentPage.videoCommentCount);
       
       if(commentPage.nextPageToken) {
         fetch(commentPage.nextPageToken);
       } else {
         setItemCompleted('i-scrape-comments');
         addDetailItem('i-process-results', 'Processing results');    
-        updateProgressBar(100);
+        updateProgressBar(fetchCount, commentPage.videoCommentCount, 100);
         displayResults(videoID);
       }
     });
   }
 }
-
-// TODO: Give feedback if something fails!
 
 function fetchCommentPage(videoID, pageToken, callback) {
   var data = {
@@ -134,29 +131,25 @@ function displayResults(videoID) {
   });
 }
 
-function updateResults(callback) {
+function updateResults(callback) {  
   $('.well-progress').show();
   $('#options-row').css('opacity', '0.4');
   $('#options-row *').attr('disabled', 'disabled');
-  $('.result-div').css('visibility', 'hidden');
   
   setTimeout(function() {
     var requiredFields = getFieldOptions();
     var resultArray = buildResultArray(requiredFields);
-
     $('#json-result').html(generateJsonOutput(resultArray));
     $('#csv-result').html(generateCsvOutput(resultArray));
     
     $('#options-row *').removeAttr('disabled');
     $('#options-row').css('opacity', '1');
-    $('.result-div').css('visibility', 'visible');
-    $('.well-progress').fadeOut();
+    $('.well-progress').hide();
     
     if(callback) {
       callback();
     }
-  }, 1);
-  return;
+  }, 0);
 }
 
 function getFieldOptions() {
