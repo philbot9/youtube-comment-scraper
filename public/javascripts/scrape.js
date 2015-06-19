@@ -34,6 +34,21 @@ function updateProgressBar(progress, total, percentage) {
   }
 }
 
+function showProcessSpinner() {
+  $('.well-progress').show();
+  $('#options-row').css('opacity', '0.4');
+  $('#options-row *').attr('disabled', 'disabled');
+  $('.tab-pane').css('visibility', 'hidden');
+}
+
+function hideProcessSpinner() {
+  $('#options-row *').removeAttr('disabled');
+  $('#options-row').css('opacity', '1');
+  $('.well-progress').hide();
+  $('.tab-pane').css('visibility', 'visible');
+  
+}
+
 /*************************************
  ** Scraping functions
  ************************************/
@@ -108,47 +123,75 @@ function displayResults(videoID) {
   $('#result-container').attr('class', '');
   $('#result-container').show('slow');
   
-  updateResults(function() {
+  loadPages(function() {
     setItemCompleted('i-process-results');
     addDetailItem('i-done', 'Done!');
     setItemCompleted('i-done');  
   });
   
-  $('#save-json').click(function(e) {
-    var requiredFields = getFieldOptions();
-    var resultArray = buildResultArray(requiredFields);
-    download(generateJsonFile(resultArray), 'comments-' + videoID + '.json', 'text/plain');
+  $('#save-json').click(function() {
+    downloadJson(videoID)
   });
   
-  $('#save-csv').click(function(e) {
-    var requiredFields = getFieldOptions();
-    var resultArray = buildResultArray(requiredFields);
-    download(generateCsvFile(resultArray), 'comments-' + videoID + '.csv', 'text/plain');  
+  $('#save-csv').click(function() {
+    downloadCsv(videoID);  
   });
   
   $('#result-container .well :checkbox').on('ifToggled', function(){  
-    return updateResults();
+    return loadPages();
   });
 }
 
-function updateResults(callback) {  
-  $('.well-progress').show();
-  $('#options-row').css('opacity', '0.4');
-  $('#options-row *').attr('disabled', 'disabled');
+var lastPageIndex = 0;
+
+function loadPages(callback) {
+  showProcessSpinner();
   
   setTimeout(function() {
-    var requiredFields = getFieldOptions();
-    var resultArray = buildResultArray(requiredFields);
+    var pagesToDisplay = [];
+    for(var i = 0; i <= lastPageIndex; i++) {
+      pagesToDisplay.push(commentPages[i]);
+    }
+    
+    var buttonHtml = '<button type="button" class="btn btn-default btn-block" onclick="lastPageIndex++; loadPages()">Show more</button>';
+    var resultArray = buildResultArray(pagesToDisplay, getFieldOptions());
     $('#json-result').html(generateJsonOutput(resultArray));
     $('#csv-result').html(generateCsvOutput(resultArray));
     
-    $('#options-row *').removeAttr('disabled');
-    $('#options-row').css('opacity', '1');
-    $('.well-progress').hide();
-    
-    if(callback) {
-      callback();
+    if(commentPages[lastPageIndex+1]) {
+      $('#json-result').append('<p>' + buttonHtml + '</p>');
+      $('#csv-result').append('<p>' + buttonHtml + '</p>');  
     }
+    hideProcessSpinner();
+    if(callback) callback();
+  
+  }, 0);
+}
+
+function downloadJson(videoID, callback) {
+  showProcessSpinner();
+  
+  setTimeout(function() {
+    var requiredFields = getFieldOptions();
+    var resultArray = buildResultArray(commentPages, requiredFields);
+    download(generateJsonFile(resultArray), 'comments-' + videoID + '.json', 'text/plain');
+  
+    hideProcessSpinner();
+    if(callback) callback();
+  }, 0);
+}
+
+
+function downloadCsv(videoID, callback) {
+  showProcessSpinner();
+  
+  setTimeout(function() {
+    var requiredFields = getFieldOptions();
+    var resultArray = buildResultArray(commentPages, requiredFields);
+    download(generateCsvFile(resultArray), 'comments-' + videoID + '.csv', 'text/plain');  
+    
+    hideProcessSpinner();
+    if(callback) callback();
   }, 0);
 }
 
@@ -200,7 +243,7 @@ function generateHtmlTable(flattenedResultArray) {
   ].join('\n');
 }
 
-function buildResultArray(fields) {
+function buildResultArray(commentPages, fields) {
   if(!fields || !fields.length) return [];
   
   return commentPages.reduce(function(comments, page) {
