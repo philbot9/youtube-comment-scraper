@@ -4,21 +4,22 @@ block content
   .card.yturl-card.col-md-1
     form#scrape-form(name='scrape-form', action='/scrape', method='post')
       .input-group.url-container.col-md-1
-        input#yt-url.form-control.search-query(type='text', name='yt-url', placeholder='Youtube URL')
+        input#yt-url.form-control.search-query(type='text', name='yt-url', placeholder='YouTube URL')
         span.input-group-btn
           input#scrape-btn.btn.btn-danger(type='submit', value='Scrape', data-type='last')
 
   
   .card.main-card.col-md-1
     #main-content
-      h4 Collect comments from Youtube
-      p This app allows you to scrape all comments from a given YouTube video. The comments can be downloaded as one of the following:
+      h4 Collect comments from YouTube
+      p This website allows you to scrape all comments from a given YouTube video. The results include the comment text, username, date and other information.
+      p The comments can be downloaded as one of the following:
       ul
-        li CSV*
         li JSON
-      p
-        em * easily imported into Excel 
+        li CSV 
+          em (can be opened in Excel)
       p The project is open source and the source code is available on 
-        a(target="_blank" href="https://github.com/philbot9/youtube-comment-web") GitHub.
-      .text-center.footer © 2015 Philip Klostermann
+        a(target='_blank' href='https://github.com/philbot9/youtube-comment-web') GitHub.
+      .text-center.footer 
+        a(target='_blank' href='http://philip.klostermann.ca/') © 2015 Philip Klostermann
   

@@ -81,6 +81,13 @@ body {
   padding-bottom: 0;
   background: none;
 }
+  .footer a {
+    color: #aaaaaa;
+  }
+  .footer a:hover {
+    color: #555555;
+    text-decoration: underline;
+  }
 
 .text-center {
   color: #aaaaaa;
