@@ -1,14 +1,14 @@
 #!/bin/bash
 
 printf "### Removing old container\n"
-docker kill youtube-comment-web
-docker rm youtube-comment-web
+docker kill youtube-comment-scraper
+docker rm youtube-comment-scraper
 
 printf "\n### Building Container...\n"
-docker build -t youtube-comment-web .
+docker build -t youtube-comment-scraper .
 
 printf "\n### Starting Container...\n"
-docker run -d -p 49161:3000 -e "NODE_ENV=production" --restart=always --name youtube-comment-web youtube-comment-web
+docker run -d -p 49161:3000 -e "NODE_ENV=production" --restart=always --name youtube-comment-scraper youtube-comment-scraper
 
 printf "\n\n### Result:\n"
-docker ps --filter=[name=youtube-comment-web]
+docker ps --filter=[name=youtube-comment-scraper]
