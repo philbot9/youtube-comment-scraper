@@ -2,7 +2,7 @@ YouTube Comment Scraper
 =======================
 
 ## About
-This is the web client for my Youtube Comment Scraper project. It is written in **Node.js** with **express.js**. It uses the [**youtube-comment-api**](https://github.com/philbot9/youtube-comment-api) module to gain access to the comments.
+This is the web client for my Youtube Comment Scraper project. It is written in **Node.js** and uses the [**youtube-comment-api**](https://github.com/philbot9/youtube-comment-api) module to gain access to the comments.
 Given a YouTube video URL the client will request all comments for that video from the API. The results are displayed as nicely formatted JSON and CSV and can also be downloaded in those formats.
 
 The results include the following information:
