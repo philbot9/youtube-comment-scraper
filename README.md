@@ -17,21 +17,23 @@ The results include the following information:
 
 To see it in action go to: [ytcomments.klostermann.ca](http://ytcomments.klostermann.ca)
 
+## Dependencies
+A number of third party resources are required and need to be placed in the indicated directories.
+
+| Name | Directory |
+|------|-----------|
+| [jQuery](https://jquery.com/) | static/libs/jquery.min.js |
+| [Font Awesome](http://fontawesome.io/) | static/font-awesome, static/stylesheets/font-awesome.min.css |
+| [Bootflat](http://bootflat.github.io/) | static/bootflat |
+| [Papa Parse](http://papaparse.com/) | static/libs/papaparse.min.js |
+| [json.human.js](https://github.com/marianoguerra/json.human.js) | static/libs/json.human.js, static/stylesheets/json.human.css |
+| [download.js](http://danml.com/#/download.html) | static/libs/download.js |
+
 ## Deployment
 The project includes a Dockerfile and deploy script. Running `./deploy` will create a new Docker image and deploy the node application in a container. The application will be listening for incoming connections on `http://localhost:49161`.
 
 
-## Licensing and Attributions
+## Licensing
 **youtube-comment-scraper** is licensed under ISC. See the included LICENSE file for details.
+
 **This project is in no way affiliated with YouTube.**
-
-A number of third party resources and libraries are also included. Each one is under the copyright of their respective creators and subject to their individual licenses. Third party resources and libraries:
-
-| Name | License | Copyright |
-|------|---------|-----------|
-| [jQuery](https://jquery.com/) |  | jQuery Foundation |
-| [Font Awesome](http://fontawesome.io/) | [Various](http://fontawesome.io/license/) | Dave Gandy |
-| [Bootflat](http://bootflat.github.io/) | MIT | bootflat |
-| [Papa Parse](http://papaparse.com/) | MIT | Matthew Holt |
-| [json.human.js](https://github.com/marianoguerra/json.human.js) | MIT | Mariano Guerra |
-| [download.js](http://danml.com/#/download.html) |  | Dan Davis |
