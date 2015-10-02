@@ -2,12 +2,12 @@ extends layout
 
 block content
   .card
-    link(rel='stylesheet', href='/static/stylesheets/scrape.css')
+    link(rel='stylesheet', href='/static/css/scrape.css')
     link(rel='stylesheet', href='/static/stylesheets/json.human.css')
     script(type='text/javascript', src="/static/libs/json.human.js")
     script(type='text/javascript', src='/static/libs/papaparse.min.js')
     script(type='text/javascript', src='/static/libs/download.js')
-    script(type='text/javascript', src='/static/javascripts/scrape.js')
+    script(type='text/javascript', src='/static/js/scrape.js')
     input#videoID(type='text', style='display: none;', value=videoID)
 
     #scraping-container
