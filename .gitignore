@@ -1,2 +1,6 @@
 node_modules/
 npm-debug.log
+static/bootflat
+static/font-awesome
+static/libs
+static/stylesheets
