@@ -1,9 +1,5 @@
-var express = require('express');
-var router = express.Router();
+var render = require('../lib/render-template');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', {});
-});
-
-module.exports = router;
+module.exports = function (req, res) {
+  render(res, 200, 'index');
+};

@@ -1,32 +1,39 @@
-var express = require('express');
-var router = express.Router();
 var fetchCommentPage = require('youtube-comment-api');
+var querystring = require('querystring');
 
-// POST comment Page - returns a page of comments including replies
-router.post('/', function(req, res, next) {
-  if (!req.body) {
-    return res.status(400);
+module.exports = function (req, res) {
+  var requestBody;
+  if(req.body) {
+    requestBody = querystring.parse(req.body);
   }
 
-  var videoID = req.body.videoID;
+  if (!requestBody) {
+    return respond(400, {error: 'Received an empty request'});
+  }
+
+  var videoID = requestBody.videoID;
   if (!videoID) {
-   return res.status(400).json({
-      error: 'Missing field \'videoID\''
-    });
+   return respond(400, {error: 'Missing field \'videoID\''});
   }
 
-  var pageToken = req.body.pageToken || null;
+  var pageToken = requestBody.pageToken || null;
 
   fetchCommentPage(videoID, pageToken).then(function(page) {
     if (!page) {
+      return respond(500, {error: 'Internal server error'});
       throw new Error('Did not receive a comment page from comment-pager');
     }
-    res.status(200).json(page);
+    respond(200, page);
   }).catch(function(error) {
-    res.status(500).json({
-      error: 'Fetching comment page failed.'
-    });
+    respond(500, {error: 'Fetching comment page failed.'});
   });
-});
 
-module.exports = router;
+  function respond (statusCode, result) {
+    res.writeHead(statusCode, {
+      'Content-Type': 'application/json'
+    });
+    var body = JSON.stringify(result);
+    res.end(body);
+    console.log('[' + statusCode + '] length ' + body.length);
+  }
+};

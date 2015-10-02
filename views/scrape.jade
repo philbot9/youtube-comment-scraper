@@ -2,27 +2,27 @@ extends layout
 
 block content
   .card
-    link(rel='stylesheet', href='/stylesheets/scrape.css')
-    link(rel='stylesheet', href='/stylesheets/json.human.css')
-    script(type='text/javascript', src="/libs/json.human.js")
-    script(type='text/javascript', src='/libs/papaparse.min.js')
-    script(type='text/javascript', src='/libs/download.js')
-    script(type='text/javascript', src='/javascripts/scrape.js')
+    link(rel='stylesheet', href='/static/stylesheets/scrape.css')
+    link(rel='stylesheet', href='/static/stylesheets/json.human.css')
+    script(type='text/javascript', src="/static/libs/json.human.js")
+    script(type='text/javascript', src='/static/libs/papaparse.min.js')
+    script(type='text/javascript', src='/static/libs/download.js')
+    script(type='text/javascript', src='/static/javascripts/scrape.js')
     input#videoID(type='text', style='display: none;', value=videoID)
-    
+
     #scraping-container
       h3 Scraping Comments
       .progress.progress-striped.active
         .progress-bar.progress-bar-danger(role='progressbar', aria-valuenow='100', aria-valuemin='0', aria-valuemax='100', style='width: 100%')
-      
+
       .well
         ul#detail-list.fa-ul
-        
-    
+
+
     #result-container.hidden
       .well
         .well.well-progress
-          i.fa.fa-circle-o-notch.fa-spin  
+          i.fa.fa-circle-o-notch.fa-spin
         h4 Options
         #options-row.row
           .col-xs-6.col-md-4
@@ -53,21 +53,21 @@ block content
             label.checkbox
               input#replies(type='checkbox', value='replies' checked)
               |Replies
-      
+
       .tabbable.clearfix.result-panel
         ul#result-tabs.nav.nav-tabs
           li.active
             a(href='#json-tab', data-toggle='tab') JSON
-          li 
+          li
             a(href='#csv-tab', data-toggle='tab') CSV
           li.pull-right
-            a#save-dropdown.dropdown-toggle.fa.fa-download(href='#', data-toggle='dropdown', aria-controls='save-dropdown-contents', aria-expanded='false') &nbsp;Download 
+            a#save-dropdown.dropdown-toggle.fa.fa-download(href='#', data-toggle='dropdown', aria-controls='save-dropdown-contents', aria-expanded='false') &nbsp;Download
             ul#save-dropdown-contents.dropdown-menu(role='menu', aria-labelledby='save-dropdown')
               li
                 a#save-json(tabindex='-1', role='tab', aria-controls='dropdown1') Save as JSON
               li
-                a#save-csv(tabindex='-1', role='tab', aria-controls='dropdown2') Save as CSV         
-  
+                a#save-csv(tabindex='-1', role='tab', aria-controls='dropdown2') Save as CSV
+
         #result-tabs-content.tab-content
           #json-tab.tab-pane.fade.active.in
             #json-result.result-div

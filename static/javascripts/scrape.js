@@ -1,4 +1,4 @@
-var API_URL = '/api/';
+var API_URL = '/api';
 var commentPages = [];
 
 /*************************************
@@ -23,7 +23,7 @@ function setItemCompleted(id) {
 function updateProgressBar(progress, total, percentage) {
   percentage = percentage || Math.ceil((100 / total) * progress);
   percentage = percentage <= 100 ? percentage : 100;
-  
+
   if(percentage < 99) {
     $('.progress-bar').attr('aria-valuenow', percentage).attr('style', 'width: ' + percentage + '%');
     $('.progress-bar').text(progress + ' / ' + total);
@@ -46,7 +46,7 @@ function hideProcessSpinner() {
   $('#options-row').css('opacity', '1');
   $('.well-progress').hide();
   $('.tab-pane').css('visibility', 'visible');
-  
+
 }
 
 /*************************************
@@ -57,12 +57,12 @@ function scrapeComments(videoID) {
   addDetailItem('i-fetch-details', 'Fetching video details');
   var fetchCount = 0;
   fetch();
-  
+
   function fetch(pageToken) {
-    
+
     fetchCommentPage(videoID, pageToken, function(err, commentPage) {
       if(err) return;
-      
+
       if(!fetchCount) {
         setItemCompleted('i-fetch-details');
         addDetailItem('i-scrape-comments', 'Scraping ' + commentPage.videoCommentCount + ' comments');
@@ -70,17 +70,17 @@ function scrapeComments(videoID) {
 
       fetchCount += commentPage.comments.reduce(function(total, comment) {
         var replies = comment.replies ? comment.replies.length : 0;
-        return total + 1 + replies; 
+        return total + 1 + replies;
       }, 0);
 
       commentPages.push(commentPage);
       updateProgressBar(fetchCount, commentPage.videoCommentCount);
-      
+
       if(commentPage.nextPageToken) {
         fetch(commentPage.nextPageToken);
       } else {
         setItemCompleted('i-scrape-comments');
-        addDetailItem('i-process-results', 'Processing results');    
+        addDetailItem('i-process-results', 'Processing results');
         updateProgressBar(fetchCount, commentPage.videoCommentCount, 100);
         displayResults(videoID);
       }
@@ -122,22 +122,22 @@ function fetchCommentPage(videoID, pageToken, callback) {
 function displayResults(videoID) {
   $('#result-container').attr('class', '');
   $('#result-container').show('slow');
-  
+
   loadPages(function() {
     setItemCompleted('i-process-results');
     addDetailItem('i-done', 'Done!');
-    setItemCompleted('i-done');  
+    setItemCompleted('i-done');
   });
-  
+
   $('#save-json').click(function() {
     downloadJson(videoID)
   });
-  
+
   $('#save-csv').click(function() {
-    downloadCsv(videoID);  
+    downloadCsv(videoID);
   });
-  
-  $('#result-container .well :checkbox').on('ifToggled', function(){  
+
+  $('#result-container .well :checkbox').on('ifToggled', function(){
     return loadPages();
   });
 }
@@ -146,36 +146,36 @@ var lastPageIndex = 0;
 
 function loadPages(callback) {
   showProcessSpinner();
-  
+
   setTimeout(function() {
     var pagesToDisplay = [];
     for(var i = 0; i <= lastPageIndex; i++) {
       pagesToDisplay.push(commentPages[i]);
     }
-    
+
     var buttonHtml = '<button type="button" class="btn btn-default btn-block" onclick="lastPageIndex++; loadPages()">Show more</button>';
     var resultArray = buildResultArray(pagesToDisplay, getFieldOptions());
     $('#json-result').html(generateJsonOutput(resultArray));
     $('#csv-result').html(generateCsvOutput(resultArray));
-    
+
     if(commentPages[lastPageIndex+1]) {
       $('#json-result').append('<p>' + buttonHtml + '</p>');
-      $('#csv-result').append('<p>' + buttonHtml + '</p>');  
+      $('#csv-result').append('<p>' + buttonHtml + '</p>');
     }
     hideProcessSpinner();
     if(callback) callback();
-  
+
   }, 0);
 }
 
 function downloadJson(videoID, callback) {
   showProcessSpinner();
-  
+
   setTimeout(function() {
     var requiredFields = getFieldOptions();
     var resultArray = buildResultArray(commentPages, requiredFields);
     download(generateJsonFile(resultArray), 'comments-' + videoID + '.json', 'text/plain');
-  
+
     hideProcessSpinner();
     if(callback) callback();
   }, 0);
@@ -184,12 +184,12 @@ function downloadJson(videoID, callback) {
 
 function downloadCsv(videoID, callback) {
   showProcessSpinner();
-  
+
   setTimeout(function() {
     var requiredFields = getFieldOptions();
     var resultArray = buildResultArray(commentPages, requiredFields);
-    download(generateCsvFile(resultArray), 'comments-' + videoID + '.csv', 'text/plain');  
-    
+    download(generateCsvFile(resultArray), 'comments-' + videoID + '.csv', 'text/plain');
+
     hideProcessSpinner();
     if(callback) callback();
   }, 0);
@@ -222,7 +222,7 @@ function generateCsvOutput(resultArray) {
 function generateHtmlTable(flattenedResultArray) {
   if(!flattenedResultArray || !flattenedResultArray.length) return '';
   var props = Object.keys(flattenedResultArray[0]);
-  
+
   return [
     '<table class="csv-table">',
     ' <thead>',
@@ -245,7 +245,7 @@ function generateHtmlTable(flattenedResultArray) {
 
 function buildResultArray(commentPages, fields) {
   if(!fields || !fields.length) return [];
-  
+
   return commentPages.reduce(function(comments, page) {
     if(comments.length) {
       //look for any overlap and remove it
@@ -291,37 +291,37 @@ function filterCommentFields(comment, fields) {
 function flattenResultArray(resultArray) {
   var result = [];
   var props = findProps(resultArray);
-  
+
   resultArray.forEach(function(elem) {
     var comment = {};
     props.forEach(function(prop) {
       comment[prop] = '';
     });
-    
+
     Object.keys(elem).forEach(function(key) {
       if(key !== 'replies') {
         comment[key] = elem[key];
       }
     });
     result.push(comment);
-    
+
     if(elem.replies) {
       elem.replies.forEach(function(replyElem) {
         var reply = {};
         props.forEach(function(prop) {
           reply[prop] = '';
         });
-        
+
         Object.keys(replyElem).forEach(function(key) {
           reply['replies.' + key] = replyElem[key];
         });
         result.push(reply);
-      });      
-    } 
+      });
+    }
   });
-  
+
   return result;
-  
+
   function findProps(arr) {
     var props = {};
     arr.forEach(function(obj) {
