@@ -23,10 +23,10 @@ A number of third party resources are required and need to be placed in the indi
 | Name | Directory |
 |------|-----------|
 | [jQuery](https://jquery.com/) | static/libs/jquery.min.js |
-| [Font Awesome](http://fontawesome.io/) | static/font-awesome, static/stylesheets/font-awesome.min.css |
+| [Font Awesome](http://fontawesome.io/) | static/font-awesome |
 | [Bootflat](http://bootflat.github.io/) | static/bootflat |
 | [Papa Parse](http://papaparse.com/) | static/libs/papaparse.min.js |
-| [json.human.js](https://github.com/marianoguerra/json.human.js) | static/libs/json.human.js, static/stylesheets/json.human.css |
+| [json.human.js](https://github.com/marianoguerra/json.human.js) | static/libs/json.human.js, static/libs/json.human.css |
 | [download.js](http://danml.com/#/download.html) | static/libs/download.js |
 
 ## Deployment
