@@ -25,6 +25,7 @@ module.exports = function (req, res) {
     }
     respond(200, page);
   }).catch(function(error) {
+    console.error(error);
     respond(500, {error: 'Fetching comment page failed.'});
   });
 
