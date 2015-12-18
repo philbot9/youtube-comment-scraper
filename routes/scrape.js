@@ -10,7 +10,8 @@ module.exports = function (req, res) {
 
   if (!requestBody.videoID) {
     return render(res, 403, 'error', {
-      'message': 'Invalid form received: Could not find a video ID.'
+      'title': 'Invalid YouTube URL',
+      'message': 'Could not find video ID in YouTube URL.'
     });
   }
 
@@ -18,7 +19,8 @@ module.exports = function (req, res) {
 
   if (!videoIdIsValid(videoID)) {
     return render(res, 403, 'error', {
-      'message': 'Invalid video ID.'
+      'title': 'Invalid Video ID',
+      'message': 'The video ID in the URL is invalid.'
     });
   }
 
