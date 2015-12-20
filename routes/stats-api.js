@@ -31,20 +31,35 @@ module.exports = function (req, res) {
       videoCountMonth += scrape.timestamp > oneMonthAgo ? 1 : 0;
       videoCountTotal++;
     }
-
-    var topVideos = [];
+    
+    // 10 most recent scrapes
+    var latestScrapes = scrapes.slice(0, 10).map(function (scrape) {
+      return {
+        timestamp: scrape.timestamp,
+        comments: scrape.commentCount,
+        title: scrape.title,
+        url: scrape.url
+      };
+    });
+    
+    
+    var transformed = [];
     _.forIn(_.groupBy(scrapes, 'videoID'), function (videoScrapes) {
-      var video = videoScrapes[0];
-      topVideos.push({
+      var video = videoScrapes[videoScrapes.length - 1];
+      if (!video) {
+        return;
+      }
+      
+      transformed.push({
         scrapes: videoScrapes.length,
         comments: video.commentCount,
         title: video.title,
         url: video.url,
       });
-
-      // limit to 50 videos
-      return topVideos.length <= 50;
     });
+    
+    // sort and limit to top 30 videos
+    var topVideos = _.sortByOrder(transformed, ['scrapes', 'comments'], ['desc', 'desc']).slice(0, 30);
 
     var body = JSON.stringify({
       commentCountDay: commentCountDay,
@@ -55,7 +70,8 @@ module.exports = function (req, res) {
       videoCountWeek: videoCountWeek,
       videoCountMonth: videoCountMonth,
       videoCountTotal: videoCountTotal,
-      topVideos: _.sortByOrder(topVideos, ['scrapes', 'comments'], ['desc', 'desc'])
+      latestScrapes: latestScrapes,
+      topVideos: topVideos
     });
 
     res.writeHead(200, {
@@ -63,6 +79,15 @@ module.exports = function (req, res) {
     });
     res.end(body);
 
-    console.log('[' + statusCode + '] length ' + body.length);
+    console.log('[200] length ' + body.length);
+  }).catch(function (err) {
+    console.error('Retrieving scrape history failed');
+    console.error(err);
+    
+    res.writeHead(500, {
+      'Content-Type': 'application/json'
+    });
+    res.end({error: '500 - Internal Server Error'});
+    console.log('[500] Internal Server Error');
   });
 };

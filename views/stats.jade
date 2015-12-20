@@ -56,6 +56,21 @@ block content
 
 
   .card
+    h4 Latest Scrapes
+    table#latest-scrapes.table.table-condensed.table-striped
+      thead
+        tr
+          th Date
+          th Time
+          th Video
+          th.text-center Comments
+      tbody.loading
+        tr
+          td(colspan='4').text-center
+            i.fa.fa-circle-o-notch.fa-spin
+      tbody.stat-content.hidden
+
+  .card
     h4 Top Videos
     table#top-videos.table.table-condensed.table-striped
       thead
