@@ -34,6 +34,35 @@
   display: inline-block;
 }
 
+.video-detail {
+  display: none;
+}
+
+.video-embed {
+  display: none;
+}
+
+.video-title {
+  font-size: 13pt;
+  font-weight: bold;
+  color: #434a54;
+}
+
+.comment-count {
+  font-style: italic;
+}
+
+.video-embed {
+  padding: 12px;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.result-panel {
+  border: 1px solid #eeeeee;
+  border-radius: 4px;
+}
+
 .tab-content {
   padding: 0;
 }
@@ -53,9 +82,9 @@ a#save-dropdown {
   a#save-dropdown:hover {
     background: #D86E79;
   }
-  
+
 .csv-table {
-  width: 100%;  
+  width: 100%;
 }
 
 .csv-table th {
@@ -73,7 +102,7 @@ a#save-dropdown {
 }
 
 .csv-table tbody tr:nth-child(even) {
-  background: #F5F5F5; 
+  background: #F5F5F5;
 }
 
 .csv-table .date-cell, .csv-table .replies\.date-cell {
@@ -84,5 +113,3 @@ a#save-dropdown {
 .csv-table .commentText-cell, .csv-table .replies\.commentText-cell {
   min-width: 50em;
 }
-  
-  

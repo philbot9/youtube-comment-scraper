@@ -8,7 +8,7 @@ printf "\n### Building Container...\n"
 docker build -t youtube-comment-scraper .
 
 # First pull mongo container and run with
-# docker run --name ytcomments-mongo mongo
+# docker run --name ytcomments-mongo -d mongo
 
 printf "\n### Starting Container...\n"
 docker run -d -p 49161:8080 -e "NODE_ENV=production" --restart always --name youtube-comment-scraper --link ytcomments-mongo:mongo youtube-comment-scraper

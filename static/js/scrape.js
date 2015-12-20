@@ -35,7 +35,7 @@ function updateProgressBar(progress, total, percentage) {
 }
 
 function showProcessSpinner() {
-  $('.well-progress').show();
+  $('.well-progress').fadeIn('fast');
   $('#options-row').css('opacity', '0.4');
   $('#options-row *').attr('disabled', 'disabled');
   $('.tab-pane').css('visibility', 'hidden');
@@ -44,9 +44,20 @@ function showProcessSpinner() {
 function hideProcessSpinner() {
   $('#options-row *').removeAttr('disabled');
   $('#options-row').css('opacity', '1');
-  $('.well-progress').hide();
+  $('.well-progress').fadeOut('fast');
   $('.tab-pane').css('visibility', 'visible');
+}
 
+function displayVideoDetails(title, commentCount, videoId) {
+  $('#video-detail .video-title').text(title);
+  $('#video-detail .video-title').attr('href', 'https://www.youtube.com/watch?v=' + videoId);
+  $('#video-detail .comment-count').text(commentCount + ' comments');
+  setTimeout(function () {
+    $('#video-detail .video-embed iframe').attr('src', '//www.youtube.com/embed/' + videoId + '?rel=0');
+    $('#video-detail .video-embed').slideDown('fast');
+  }, 800);
+
+  $('.video-detail').slideDown('slow');
 }
 
 /*************************************
@@ -66,6 +77,9 @@ function scrapeComments(videoID) {
       if(!fetchCount) {
         setItemCompleted('i-fetch-details');
         addDetailItem('i-scrape-comments', 'Scraping ' + commentPage.videoCommentCount + ' comments');
+        setTimeout(function () {
+          displayVideoDetails(commentPage.videoTitle, commentPage.videoCommentCount, videoID);
+        }, 800);
       }
 
       fetchCount += commentPage.comments.reduce(function(total, comment) {
