@@ -20,6 +20,10 @@ function setItemCompleted(id) {
   $('#' + id).attr('class', 'fa-li fa fa-check-circle-o');
 }
 
+function setItemFailed(id) {
+  $('#' + id).attr('class', 'fa-li fa fa-times-circle');
+}
+
 function updateProgressBar(progress, total, percentage) {
   percentage = percentage || Math.ceil((100 / total) * progress);
   percentage = percentage <= 100 ? percentage : 100;
@@ -72,7 +76,16 @@ function scrapeComments(videoID) {
   function fetch(pageToken) {
 
     fetchCommentPage(videoID, pageToken, function(err, commentPage) {
-      if(err) return;
+      if(err) {
+        setItemFailed('i-fetch-details');
+        updateProgressBar(0, 0, 0);
+        $('#video-error-modal').modal({
+          backdrop: 'static',
+          keyboard: false
+        });
+        $('#video-error-modal').show();
+        return;
+      }
 
       if(!fetchCount) {
         setItemCompleted('i-fetch-details');

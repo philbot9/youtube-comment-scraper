@@ -1,5 +1,6 @@
 var fetchCommentPage = require('youtube-comment-api');
 var querystring = require('querystring');
+var debug = require('debug')('api');
 
 module.exports = function (req, res) {
   var requestBody;
@@ -25,7 +26,7 @@ module.exports = function (req, res) {
     }
     respond(200, page);
   }).catch(function(error) {
-    console.error(error);
+    debug(error);
     respond(500, {error: 'Fetching comment page failed.'});
   });
 

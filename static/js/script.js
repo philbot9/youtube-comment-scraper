@@ -1,4 +1,6 @@
 $(document).ready(function() {
+  $('#modal').show();
+  
   $('#scrape-form').submit(submitScrapeForm);
   $('#yt-url').on('input', validateUrl);
 });

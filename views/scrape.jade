@@ -81,3 +81,15 @@ block content
             #json-result.result-div
           #csv-tab.tab-pane.fade
             #csv-result.result-div
+
+
+  #video-error-modal.modal(role='dialog')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h4.modal-title Video Error
+        .modal-body
+          p We were unable to scrape the comments for that video. Please make sure the YouTube URL is correct.
+        .modal-footer
+          a(href='/')
+            button(type="button" class="btn btn-primary") Try again
