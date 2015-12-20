@@ -3,10 +3,10 @@ extends layout
 block content
   .card.yturl-card.col-md-1
     form#scrape-form(name='scrape-form', action='/scrape', method='post')
-      .input-group.url-container.col-md-1
+      #url-input.input-group.url-container.col-md-1.has-feedback
         input#yt-url.form-control.search-query(type='text', name='yt-url', placeholder='YouTube URL')
         span.input-group-btn
-          input#scrape-btn.btn.btn-danger(type='submit', value='Scrape', data-type='last')
+          input#scrape-btn.btn(type='submit', value='Scrape', data-type='last' disabled)
 
 
   .card.main-card.col-md-1
@@ -18,7 +18,7 @@ block content
         li JSON
         li CSV
           em (can be opened in Excel)
-      p The project is open source and the source code is available on 
+      p The project is open source and the source code is available on
         a(target='_blank' href='https://github.com/philbot9/youtube-comment-scraper') GitHub.
       .text-center.footer
         a(target='_blank' href='http://philip.klostermann.ca/') © 2015 Philip Klostermann
