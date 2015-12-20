@@ -1,0 +1,28 @@
+.text-center {
+  color: #434a54;
+}
+
+.panel-heading > h3 {
+  font-weight: bold;
+  font-size: 12pt;
+}
+
+.scrape-stat {
+  display: inline-block;
+  margin: 0 1.5em;
+}
+
+.scrape-num {
+  font-size: 22pt;
+  margin: 0.2em;
+  padding: 0.4em;
+}
+
+.scrape-subtitle {
+  margin: 0.2em;
+  font-weight: bold;
+}
+
+.loading {
+  font-size: 18pt;
+}

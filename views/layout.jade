@@ -26,19 +26,35 @@ html
             span.icon-bar
           a(href='/')
             i.fa.fa-comments-o.site-logo
-            span.site-title YouTube Comment Scraper
+            span.site-title
+              span.title-large Y
+              span ou
+              span.title-large T
+              span ube Comment Scraper
         // Collect the nav links, forms, and other content for toggling
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
-          ul.nav.navbar-nav.navbar-right
+          ul.nav.navbar-nav.navbar-right.text-center
             li
               a(href='/')
                 i.fa.fa-home
+                br
+                .nav-text Home
+            li
+              a(href='/stats')
+                i.fa.fa-table
+                br
+                .nav-text Stats
             li
               a(target="_blank" href='https://github.com/philbot9/youtube-comment-scraper')
                 i.fa.fa-github
+                br
+                .nav-text Source
             li
               a(target="_blank" href='http://philip.klostermann.ca/')
                 i.fa.fa-user
+                br
+                .nav-text About
+
 
     .container
       block content

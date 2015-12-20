@@ -16,6 +16,8 @@ var server = http.createServer(function (req, res) {
 dispatcher.setStatic('static');
 dispatcher.setStaticDirname('.');
 dispatcher.onGet('/', routes.index);
+dispatcher.onGet('/stats', routes.stats);
+dispatcher.onGet('/stats-api', routes.stats_api);
 dispatcher.onPost('/scrape', routes.scrape);
 dispatcher.onPost('/api', routes.api);
 

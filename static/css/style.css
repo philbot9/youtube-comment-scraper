@@ -15,12 +15,16 @@ body {
 
 .navbar-default .navbar-nav>li>a {
   color: #FFFFFF;
-  font-size: 14pt;
+  font-size: 15pt;
 }
   .navbar-default .navbar-nav>li>a:hover {
-    color: #4FC1E9;
+    color: #ed5565;
   }
 
+.nav-text {
+  font-size: 11pt;
+  font-weight: normal;
+}
 
 .navbar-default .navbar-toggle {
   border-color: #3BAFDA;
@@ -30,33 +34,38 @@ body {
 .navbar-default .navbar-toggle .icon-bar {
   background-color: #4FC1E9;
 }
-  
+
 .site-logo {
   position:absolute;
-  top: -10px;
-  font-size: 85pt;
-  opacity: 0.15;
+  top: 5px;
+  font-size: 80pt;
+  opacity: 0.5;
   margin-right: 10px;
-  color: #4FC1E9;
+  color: #ed5565;
 }
-  .site-logo:hover {
-    opacity: 0.5;
-  }
-
 .site-title {
   position: relative;
-  top: 12px;
-  font-weight: 600;
-  font-size: 18pt;
+  top: 16px;
+  font-weight: 800;
+  font-size: 16pt;
   color: #FFFFFF;
   letter-spacing: 1px;
   text-transform: uppercase;
   text-decoration: none;
+  text-shadow:
+     -1px -1px 0 #202E3C,
+      1px -1px 0 #202E3C,
+      -1px 1px 0 #202E3C,
+       1px 1px 0 #202E3C;
 }
   .site-title:hover {
-    color: #4FC1E9;
+    color: #ed5565;
   }
-  
+
+.title-large {
+  font-size: 1.4em;
+}
+
 .url-container {
   width: 100%;
   min-width: 100px;
@@ -92,4 +101,3 @@ body {
 .text-center {
   color: #aaaaaa;
 }
-

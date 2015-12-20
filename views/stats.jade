@@ -1,0 +1,71 @@
+extends layout
+
+block content
+  link(rel='stylesheet', href='/static/css/stats.css')
+  script(type='text/javascript', src='/static/js/stats.js')
+  .card
+    h4 Scrape stats
+    .row
+      .col-md-12
+        .panel.panel-default
+          .panel-heading.text-center
+            h3.panel-title Comments scraped
+          .panel-body.loading.text-center
+            i.fa.fa-circle-o-notch.fa-spin
+          .panel-body.stat-content.text-center.hidden
+            #comment-count-day.scrape-stat
+              .badge.badge-warning.scrape-num 0
+              .scrape-subtitle
+                small today
+            #comment-count-week.scrape-stat
+              .badge.badge-warning.scrape-num 0
+              .scrape-subtitle
+                small this week
+            #comment-count-month.scrape-stat
+              .badge.badge-warning.scrape-num 0
+              .scrape-subtitle
+                small this month
+            #comment-count-total.scrape-stat
+              .badge.badge-warning.scrape-num 0
+              .scrape-subtitle
+                small total
+
+      .col-md-12
+        .panel.panel-default
+          .panel-heading.text-center
+            h3.panel-title Videos scraped
+          .panel-body.loading.text-center
+            i.fa.fa-circle-o-notch.fa-spin
+          .panel-body.stat-content.text-center.hidden
+            #video-count-day.scrape-stat
+              .badge.badge-primary.scrape-num 0
+              .scrape-subtitle
+                small today
+            #video-count-week.scrape-stat
+              .badge.badge-primary.scrape-num 0
+              .scrape-subtitle
+                small this week
+            #video-count-month.scrape-stat
+              .badge.badge-primary.scrape-num 0
+              .scrape-subtitle
+                small this month
+            #video-count-total.scrape-stat
+              .badge.badge-primary.scrape-num 0
+              .scrape-subtitle
+                small total
+
+
+  .card
+    h4 Top Videos
+    table#top-videos.table.table-condensed.table-striped
+      thead
+        tr
+          th.text-center Rank
+          th Video
+          th.text-center Scrapes
+          th.text-center Comments
+      tbody.loading
+        tr
+          td(colspan='4').text-center
+            i.fa.fa-circle-o-notch.fa-spin
+      tbody.stat-content.hidden
