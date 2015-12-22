@@ -31,5 +31,5 @@ module.exports = function (req, res) {
 };
 
 function videoIdIsValid(videoId) {
-  return videoId.length < 15 && /^[a-zA-Z0-9\_\-]+$/.test(videoId);
+  return videoId.length == 11 && /^[a-zA-Z0-9\_\-]+$/.test(videoId);
 }
