@@ -50,7 +50,7 @@ function extractVideoID(url) {
   } else {
     m = /(?:http[s]?:\/\/)?(?:www\.)?youtu\.be\/([^\?]+)\??/i.exec(url);
     if (m && m.length === 2) {
-      return m[1];
+      videoID = m[1];
     }
   }
 
