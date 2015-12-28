@@ -308,7 +308,7 @@ function filterCommentFields(comment, fields) {
         });
       }
     } else if(typeof comment[prop] !== 'undefined' && comment[prop] !== null) {
-      c[prop] = comment[prop] || '';
+      c[prop] = (comment[prop] !== 0) ? (comment[prop] || '') : 0;
     }
   });
   return c;
