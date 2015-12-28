@@ -30,10 +30,26 @@ A number of third party resources are required and need to be placed in the indi
 | [download.js](http://danml.com/#/download.html) | static/libs/download.js |
 
 ## Deployment
-The project includes a Dockerfile and deploy script. Running `./deploy` will create a new Docker image and deploy the node application in a container. The application will be listening for incoming connections on `http://localhost:49161`.
+A Dockerfile and deploy script are included. A running mongo docker instance is required to collect the stats. 
 
+First, create and start the mongo container.
+
+``` bash
+$ docker pull mongo
+$ docker run --name="ytcomments-mongo" --restart="always" -v /host/path/to/data/dir:/data/db -d mongo
+```
+
+Then run the `deploy` script.
+
+``` bash
+$ ./deploy
+```
+
+The application will be listening for incoming connections on `http://localhost:49161`.
+
+For subsequent deploys only run the deploy script, as long as the mongo container is still running.
 
 ## Licensing
-**youtube-comment-scraper** is licensed under ISC. See the included LICENSE file for details.
+**youtube-comment-scraper** is licensed under ISC. See the included `LICENSE` file for details.
 
 **This project is in no way affiliated with YouTube.**
