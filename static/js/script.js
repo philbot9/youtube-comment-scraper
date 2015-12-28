@@ -1,6 +1,4 @@
 $(document).ready(function() {
-  $('#modal').show();
-  
   $('#scrape-form').submit(submitScrapeForm);
   $('#yt-url').on('input', validateUrl);
 });
@@ -41,12 +39,24 @@ function validateUrl() {
 }
 
 function extractVideoID(url) {
-  if(!url || !url.length || typeof url != 'string')
+  if (!url || !url.length || typeof url != 'string') {
     return false;
+  }
+  var videoID;
 
-  var m = /(?:http[s]?:\/\/)?(?:www\.)?youtube\.\w{2,3}\/watch\?v=([^&]+)\&?/i.exec(url);
-  if(!m || m.length < 1)
-    return false;
+  var m = /(?:http[s]?:\/\/)?(?:www\.)?youtube\.\w{2,3}\/watch\?.*?v=([^&]+)\&?/i.exec(url);
+  if (m && m.length === 2) {
+    videoID = m[1];
+  } else {
+    m = /(?:http[s]?:\/\/)?(?:www\.)?youtu\.be\/([^\?]+)\??/i.exec(url);
+    if (m && m.length === 2) {
+      videoID = m[1];
+    }
+  }
 
-  return m[1];
+  if (videoID && videoID.length === 11) {
+    return videoID;
+  }
+
+  return false;
 }

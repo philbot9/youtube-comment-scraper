@@ -1,4 +1,3 @@
-var API_URL = '/api';
 var commentPages = [];
 
 /*************************************
@@ -126,7 +125,7 @@ function fetchCommentPage(videoID, pageToken, callback) {
   $.ajax({
     type: 'POST',
     accepts: 'json',
-    url: API_URL,
+    url: '/api',
     data: data,
     success: successHandler,
     error: errorHandler,
