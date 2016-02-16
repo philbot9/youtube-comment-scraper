@@ -7,9 +7,9 @@ module.exports = function (req, res) {
   getScrapeHistory().then(function(scrapes) {
     debug('Scrape history retrieved: %d', scrapes.length);
 
-    var oneDayAgo = moment().subtract(1, 'day').valueOf();
-    var oneWeekAgo = moment().subtract(1, 'week').valueOf();
-    var oneMonthAgo = moment().subtract(1, 'month').valueOf();
+    var today = moment().startOf('day').valueOf();
+    var thisWeek = moment().startOf('week').valueOf();
+    var thisMonth = moment().startOf('month').valueOf();
 
     var commentCountDay = 0;
     var commentCountWeek = 0;
@@ -18,18 +18,17 @@ module.exports = function (req, res) {
     var videoCountDay = 0;
     var videoCountWeek = 0;
     var videoCountMonth = 0;
-    var videoCountTotal = 0;
+    var videoCountTotal = scrapes.length;
 
     for (var i = 0; i < scrapes.length; i++) {
       var scrape = scrapes[i];
-      commentCountDay += scrape.timestamp > oneDayAgo ? scrape.commentCount : 0;
-      commentCountWeek += scrape.timestamp > oneWeekAgo ? scrape.commentCount : 0;
-      commentCountMonth += scrape.timestamp > oneMonthAgo ? scrape.commentCount : 0;
+      commentCountDay += scrape.timestamp > today ? scrape.commentCount : 0;
+      commentCountWeek += scrape.timestamp > thisWeek ? scrape.commentCount : 0;
+      commentCountMonth += scrape.timestamp > thisMonth ? scrape.commentCount : 0;
       commentCountTotal += scrape.commentCount;
-      videoCountDay += scrape.timestamp > oneDayAgo ? 1 : 0;
-      videoCountWeek += scrape.timestamp > oneWeekAgo ? 1 : 0;
-      videoCountMonth += scrape.timestamp > oneMonthAgo ? 1 : 0;
-      videoCountTotal++;
+      videoCountDay += scrape.timestamp > today ? 1 : 0;
+      videoCountWeek += scrape.timestamp > thisWeek ? 1 : 0;
+      videoCountMonth += scrape.timestamp > thisMonth ? 1 : 0;
     }
     
     // 10 most recent scrapes

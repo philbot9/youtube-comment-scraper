@@ -1,6 +1,14 @@
-var fetchCommentPage = require('youtube-comment-api');
 var querystring = require('querystring');
 var debug = require('debug')('api');
+
+var fetchCommentPage = require('youtube-comment-api')({
+  includeReplies: true,
+  includeVideoInfo: true,
+  fetchRetries: 3,
+  sessionTimeout: 60 * 60, // 60 minutes
+  cacheDuration: 60 * 60, // 60 minutes
+  cacheInterval: 60 * 5 // 5 minutes
+});
 
 module.exports = function (req, res) {
   var requestBody;
