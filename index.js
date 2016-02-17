@@ -18,8 +18,10 @@ dispatcher.setStaticDirname('.');
 dispatcher.onGet('/', routes.index);
 dispatcher.onGet('/stats', routes.stats);
 dispatcher.onGet('/stats-api', routes.stats_api);
+dispatcher.onGet('/report', routes.report);
 dispatcher.onPost('/scrape', routes.scrape);
 dispatcher.onPost('/api', routes.api);
+dispatcher.onPost('/report', routes.report);
 
 dispatcher.onError(function(req, res) {
   render(res, 404, 'error', {

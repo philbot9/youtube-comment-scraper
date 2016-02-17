@@ -13,6 +13,7 @@
     "lodash": "^3.10.1",
     "moment": "^2.10.6",
     "mongo-sanitize": "^1.0.0",
+    "nodemailer": "^2.1.0",
     "promised-mongo": "^1.2.0",
     "youtube-comment-api": "^2.0.3",
     "youtube-info": "^1.1.0"

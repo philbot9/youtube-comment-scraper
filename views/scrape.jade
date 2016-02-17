@@ -12,6 +12,8 @@ block content
 
     #scraping-container
       h3 Scraping Comments
+      p Having problems?
+        a(href='/report?youtubeUrl=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D#{videoID}', target='_blank')  Report an issue.
       .progress.progress-striped.active
         .progress-bar.progress-bar-danger(role='progressbar', aria-valuenow='100', aria-valuemin='0', aria-valuemax='100', style='width: 100%')
 
@@ -83,13 +85,15 @@ block content
             #csv-result.result-div
 
 
-  #video-error-modal.modal(role='dialog')
+  #video-error-modal.modal(role='dialog').visible
     .modal-dialog
       .modal-content
         .modal-header
           h4.modal-title Video Error
         .modal-body
           p We were unable to scrape the comments for that video. Please make sure the YouTube URL is correct.
+          p Having problems?
+            a(href='/report?youtubeUrl=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D#{videoID}', target='_blank')  Report an issue.
         .modal-footer
           a(href='/')
             button(type="button" class="btn btn-primary") Try again

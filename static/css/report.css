@@ -1,0 +1,13 @@
+.form-container {
+  float: none;
+  margin: 1em auto;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  padding: 2em;
+  padding-bottom: 1em;
+}
+
+.form-container .btn {
+  margin-top: 0.5em;
+  width: 100%;
+}

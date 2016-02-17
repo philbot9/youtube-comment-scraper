@@ -1,0 +1,48 @@
+form(action='/report', name='report', id='report', method='post')
+  fieldset
+    p
+      label(for='name') Your Name:
+      br
+      if locals.fields
+        input.form-control(name='name', type='text', value='#{fields.name}' id='name', placeholder='(optional)')
+      else
+        input.form-control(name='name', type='text', value='', id='name', placeholder='(optional)')
+    p
+      label(for='email') Your Email:
+      br
+      if locals.fields
+        input.form-control(name='email', type='email', value='#{fields.email}', id='email', placeholder='(optional)')
+      else
+        input.form-control(name='email', type='email', value='', id='email', placeholder='(optional)')
+    p
+      label(for='youtubeUrl') YouTube URL:
+      br
+      if locals.fields
+        input.form-control(name='youtubeUrl', type='text', value='#{fields.youtubeUrl}', id='youtubeUrl', required=true)
+      else
+        input.form-control(name='youtubeUrl', type='text', value='', id='youtubeUrl', required=true)
+    p
+      label(for='issue') Issue:
+      br
+      select.form-control(name='issue', id='issue', required=true)
+        option.hidden(value='')
+          | Please select one
+        option(value='The scraper never started after I hit "Scrape".')
+          | The scraper never started after I hit "Scrape".
+        option(value='The scraper started but never finished.')
+          | The scraper started but never finished.
+        option(value='The scraper finished successfully, but didn\'t display the results.')
+          | The scraper finished successfully, but didn't display the results.
+        option(value='The scraper finished successfully, but I could not download the result.')
+          | The scraper finished successfully, but I could not download the result.
+        option(value='Other')
+          | Other (please explain below)
+    p
+      label(for='message') Message:
+      br
+      if locals.fields
+        textarea.form-control(name='message', cols='40', rows='10', id='message') #{fields.message}
+      else
+        textarea.form-control(name='message', cols='40', rows='10', id='message')
+    p
+      input.btn.btn-primary(name='submit', type='submit', value='Send', id='submit')
