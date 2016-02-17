@@ -5,9 +5,9 @@ block content
   .card.report-card.col-md-1
     h3 Report an issue
 
-    p I do my best to keep the <b>YouTube Comment Scraper</b> up-to-date and working, but sometimes things may not work as expected. Since some information is scraped directly from the YouTube website, this app may stop working whenever YouTube makes changes to their website.
-    p If you find that scraping comments from YouTube fails <b>continuosly</b>, please let me know using the form below. Or submit an issue/pull request on the
-      a(href='https://github.com/philbot9/youtube-comment-scraper', target='_blank')  GitHub repo.
+    p I do my best to keep the <b>YouTube Comment Scraper</b> up-to-date and working, but sometimes things do break. Since the comments are scraped directly from the web, this app may stop working whenever YouTube makes changes to their website.
+    p If you find that scraping comments from YouTube fails <b>continuously</b>, please let me know using the form below. Or submit an Issue/Pull Request on
+      a(href='https://github.com/philbot9/youtube-comment-scraper', target='_blank')  GitHub.
 
     .row
       if locals.success
@@ -20,6 +20,5 @@ block content
             |  #{error}
           include ./report-form.jade
       else
-
         .form-container.col-md-6
           include ./report-form.jade
