@@ -5,4 +5,4 @@ module.exports = {
   scrape: require('./scrape'),
   api: require('./api'),
   report: require('./report')
-};
+}

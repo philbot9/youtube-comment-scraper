@@ -1,30 +1,32 @@
-var nodemailer = require('nodemailer');
-var render = require('../lib/render-template');
+var nodemailer = require('nodemailer')
+var render = require('../lib/render-template')
 
 module.exports = function (req, res) {
   console.log(req)
   // render the form
   if (req.method === 'GET') {
-    return render(res, 200, 'report', {fields: {
-      name: req.params.name || '',
-      email: req.params.email || '',
-      youtubeUrl: req.params.youtubeUrl || '',
-      message: req.params.message || ''
-    }});
+    return render(res, 200, 'report', {
+      fields: {
+        name: req.params.name || '',
+        email: req.params.email || '',
+        youtubeUrl: req.params.youtubeUrl || '',
+        message: req.params.message || ''
+      }
+    })
   }
 
-  var requiredFields = ['youtubeUrl', 'issue'];
-  var params = req.params;
+  var requiredFields = ['youtubeUrl', 'issue']
+  var params = req.params
 
   var valid = requiredFields.every(function (requiredField) {
-    return params[requiredField];
+    return params[requiredField]
   })
 
-  msg = '';
+  var msg = ''
   if (valid) {
     if (!/youtu\.?be(\.com)?/i.test(params.youtubeUrl)) {
-      msg = ' Please enter a valid YouTube URL.';
-      valid = false;
+      msg = ' Please enter a valid YouTube URL.'
+      valid = false
     }
   }
 
@@ -35,12 +37,12 @@ module.exports = function (req, res) {
     })
   }
 
-  var transporter = nodemailer.createTransport('smtps://philip.klostermann%40gmail.com:syugwyvxlzxeghrr@smtp.gmail.com');
+  var transporter = nodemailer.createTransport('smtps://username%40gmail.com:password@smtp.gmail.com')
 
   var mailOpts = {
     from: 'Youtube Comment Scraper',
-    to: 'philip.klostermann@gmail.com',
-    subject: 'Youtube Comment Scraper issue reported: ' + params.issue,
+    to: 'receiver_email',
+    subject: 'Youtube Comment Scraper issue reported',
     html: [
       '<h2>Issue reported</h2>',
       '<p><strong>Name:</strong> ' + (params.name || '<em>unknown</em>') + '</p>',
@@ -57,7 +59,7 @@ module.exports = function (req, res) {
       'Issue: ' + params.issue,
       'Message: ' + (params.message || 'empty')
     ].join('\n\n')
-  };
+  }
 
   transporter.sendMail(mailOpts, function (err, response) {
     if (err) {
@@ -65,13 +67,13 @@ module.exports = function (req, res) {
       return render(res, 200, 'report', {
         error: 'Could not send the issue. Please try again later.',
         fields: params
-      });
+      })
     }
 
-    console.log('Email sent');
+    console.log('Email sent')
     // render the notification
     return render(res, 200, 'report', {
-      success: 'Thank you for submitting the issue. I\'ll look into it ASAP.'
-    });
-  });
-};
+      success: "Thank you for submitting the issue. I'll look into it ASAP."
+    })
+  })
+}
