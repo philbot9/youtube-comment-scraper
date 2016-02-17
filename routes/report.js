@@ -2,7 +2,6 @@ var nodemailer = require('nodemailer')
 var render = require('../lib/render-template')
 
 module.exports = function (req, res) {
-  console.log(req)
   // render the form
   if (req.method === 'GET') {
     return render(res, 200, 'report', {
@@ -63,14 +62,14 @@ module.exports = function (req, res) {
 
   transporter.sendMail(mailOpts, function (err, response) {
     if (err) {
-      console.error(err)
+      console.error('Error sending email: ', err)
       return render(res, 200, 'report', {
         error: 'Could not send the issue. Please try again later.',
         fields: params
       })
     }
 
-    console.log('Email sent')
+    console.log('Email sent:', JSON.stringify(mailOpts, null, 2))
     // render the notification
     return render(res, 200, 'report', {
       success: "Thank you for submitting the issue. I'll look into it ASAP."
