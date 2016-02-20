@@ -5,9 +5,8 @@ var fetchCommentPage = require('youtube-comment-api')({
   includeReplies: true,
   includeVideoInfo: true,
   fetchRetries: 3,
-  sessionTimeout: 60 * 60, // 60 minutes
-  cacheDuration: 60 * 60, // 60 minutes
-  cacheInterval: 60 * 5 // 5 minutes
+  sessionTimeout: 30 * 60, // 30 minutes
+  cacheDuration: 30 * 60 // 30 minutes
 })
 
 module.exports = function (req, res) {
