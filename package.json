@@ -1,7 +1,7 @@
 {
   "name": "youtube-comment-scraper",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "start": "node index.js"
   },
@@ -16,6 +16,6 @@
     "nodemailer": "^2.1.0",
     "promised-mongo": "^1.2.0",
     "youtube-comment-api": "^2.1.1",
-    "youtube-info": "^1.1.0"
+    "youtube-info": "^1.1.1"
   }
 }
