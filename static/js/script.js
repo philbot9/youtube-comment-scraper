@@ -2,10 +2,12 @@ $(document).ready(function() {
   $('#scrape-form').submit(submitScrapeForm);
   $('#yt-url').on('input', validateUrl);
 
-  var userAgent = navigator.userAgent
-  if (/Safari/i.test(userAgent) && !/Chrome/i.test(userAgent)) {
-    $('#safari-warning').attr('style', '')
-  }
+  setTimeout(function () {
+    var userAgent = navigator.userAgent
+    if (/Safari/i.test(userAgent) && !/Chrome/i.test(userAgent)) {
+      $('#safari-warning').attr('style', '')
+    }
+  }, 1000)
 });
 
 function submitScrapeForm(e) {
