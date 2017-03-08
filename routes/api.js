@@ -1,13 +1,7 @@
 var querystring = require('querystring')
 var debug = require('debug')('api')
 
-var fetchCommentPage = require('youtube-comment-api')({
-  includeReplies: true,
-  includeVideoInfo: true,
-  fetchRetries: 3,
-  sessionTimeout: 30 * 60, // 30 minutes
-  cacheDuration: 30 * 60 // 30 minutes
-})
+var fetchCommentPage = require('../lib/fetch-comment-page')
 
 module.exports = function (req, res) {
   var requestBody
@@ -26,14 +20,15 @@ module.exports = function (req, res) {
 
   var pageToken = requestBody.pageToken || null
 
-  fetchCommentPage(videoID, pageToken).then(function (page) {
-    if (!page) {
-      return respond(500, {error: 'Internal server error'})
-      throw new Error('Did not receive a comment page from comment-pager')
-    }
-    respond(200, page)
+  fetchCommentPage(videoID, pageToken)
+    .then(function (page) {
+      if (!page) {
+        respond(500, {error: 'Internal server error'})
+        throw new Error('Did not receive a comment page')
+      }
+      respond(200, page)
   }).catch(function (error) {
-    debug(error)
+    console.error(error)
     respond(500, {error: 'Fetching comment page failed.'})
   })
 
