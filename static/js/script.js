@@ -1,6 +1,11 @@
 $(document).ready(function() {
   $('#scrape-form').submit(submitScrapeForm);
   $('#yt-url').on('input', validateUrl);
+
+  var userAgent = navigator.userAgent
+  if (/Safari/i.test(userAgent) && !/Chrome/i.test(userAgent)) {
+    $('#safari-warning').attr('style', '')
+  }
 });
 
 function submitScrapeForm(e) {

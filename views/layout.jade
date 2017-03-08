@@ -62,4 +62,16 @@ html
 
 
     .container
+
+      #safari-warning.alert.alert-warning.alert-dismissable(style="display: none;")
+        button(type="button" class="close" data-dismiss="alert" aria-hidden="true") ×
+        strong Warning for Safari users&nbsp;
+        p The Safari web browser does not support downloading the results of a scrape. Please use a real browser &#40;e.g.&nbsp;
+          strong
+            a(target='blank' href="https://www.mozilla.org/en-US/firefox/products/") Firefox
+          &nbsp;or&nbsp;
+          strong
+            a(target='blank' href="https://www.google.com/chrome/") Chrome
+          &#41;.
+
       block content
