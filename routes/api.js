@@ -10,12 +10,12 @@ module.exports = function (req, res) {
   }
 
   if (!requestBody) {
-    return respond(400, {error: 'Received an empty request'})
+    return respond(400, { error: 'Received an empty request' })
   }
 
   var videoID = requestBody.videoID
   if (!videoID) {
-    return respond(400, {error: "Missing field 'videoID'"})
+    return respond(400, { error: "Missing field 'videoID'" })
   }
 
   var pageToken = requestBody.pageToken || null
@@ -23,14 +23,15 @@ module.exports = function (req, res) {
   fetchCommentPage(videoID, pageToken)
     .then(function (page) {
       if (!page) {
-        respond(500, {error: 'Internal server error'})
+        respond(500, { error: 'Internal server error' })
         throw new Error('Did not receive a comment page')
       }
       respond(200, page)
-  }).catch(function (error) {
-    console.error(error)
-    respond(500, {error: 'Fetching comment page failed.'})
-  })
+    })
+    .catch(function (error) {
+      console.error(error)
+      respond(500, error)
+    })
 
   function respond (statusCode, result) {
     res.writeHead(statusCode, {
