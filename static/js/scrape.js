@@ -30,7 +30,7 @@ function updateProgressBar (progress, total, percentage) {
   percentage = percentage || Math.ceil(100 / total * progress)
   percentage = percentage <= 100 ? percentage : 100
 
-  if (percentage < 99) {
+  if (percentage < 99 && total > 0) {
     $('.progress-bar')
       .attr('aria-valuenow', percentage)
       .attr('style', 'width: ' + percentage + '%')
@@ -62,7 +62,11 @@ function displayVideoDetails (title, commentCount, videoId) {
     'href',
     'https://www.youtube.com/watch?v=' + videoId
   )
-  $('#video-detail .comment-count').text(commentCount + ' comments')
+
+  if (commentCount) {
+    $('#video-detail .comment-count').text(commentCount + ' comments')
+  }
+
   setTimeout(function () {
     $('#video-detail .video-embed iframe').attr(
       'src',
@@ -103,7 +107,9 @@ function scrapeComments (videoID) {
         setItemCompleted('i-fetch-details')
         addDetailItem(
           'i-scrape-comments',
-          'Scraping ' + commentPage.videoCommentCount + ' comments'
+          ['Scraping', commentPage.videoCommentCount, 'comments']
+            .filter(Boolean)
+            .join(' ')
         )
         setTimeout(function () {
           displayVideoDetails(
@@ -120,7 +126,10 @@ function scrapeComments (videoID) {
       }, 0)
 
       commentPages.push(commentPage)
-      updateProgressBar(fetchCount, commentPage.videoCommentCount)
+
+      if (commentPage.videoCommentCount) {
+        updateProgressBar(fetchCount, commentPage.videoCommentCount)
+      }
 
       if (commentPage.nextPageToken) {
         fetch(commentPage.nextPageToken)
