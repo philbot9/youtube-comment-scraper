@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  .card.yturl-card.col-md-1
+    #main-content
+      h2 Currently unavailable
+      p Due to circumstances beyond my control the scraper has stopped working. A solution is being worked on.
+      a(target='_blank' href='https://github.com/philbot9/youtube-comment-scraper/issues/28') GitHub Issue
+
+  .card.main-card.col-md-1
+    #main-content
+      h4 Download comments from YouTube
+      p This website allows you to download (scrape) all comments from a given YouTube video. The results include the comment text, username, date and other information.
+      p The comments can be downloaded as one of the following:
+      ul
+        li JSON
+        li CSV
+          em  (can be opened in Excel)
+      p This project is open source and the source code is available on
+        a(target='_blank' href='https://github.com/philbot9/youtube-comment-scraper') &nbsp;GitHub.
+      .text-center.footer
+        a(target='_blank' href='http://philip.klostermann.ca/') &copy; 2019 Philip Klostermann
