@@ -10,7 +10,7 @@
     "etag": "^1.7.0",
     "httpdispatcher": "^0.4.0",
     "jade": "^1.9.2",
-    "lodash": "^3.10.1",
+    "lodash": "^4.17.13",
     "mime": "^1.4.1",
     "moment": "^2.10.6",
     "mongo-sanitize": "^1.0.0",
